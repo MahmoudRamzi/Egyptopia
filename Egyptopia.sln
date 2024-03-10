@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgyptopiaApi", "Egyptopia\EgyptopiaApi.csproj", "{5AA523DA-A6EA-40D2-A172-906ABC8E0C71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{158176CD-960E-4288-ABF9-D517F41EF882}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{75814F7B-E497-4CBF-82B3-8D167B31FCC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egyptopia.Application", "Egyptopia.Application\Egyptopia.Application.csproj", "{C24594AB-246A-4715-BCCA-AF8407D6B6D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egyptopia.Domain", "Egyptopia.Domain\Egyptopia.Domain.csproj", "{FB781D2D-AF17-49D6-B65E-A734E2C9C84E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{9982F72F-EB08-4F7F-A666-7D620CDC0D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egyptopia.Persistence", "Egyptopia.Persistence\Egyptopia.Persistence.csproj", "{553CBFF4-64E8-420C-B68C-2807F7435BFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5AA523DA-A6EA-40D2-A172-906ABC8E0C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AA523DA-A6EA-40D2-A172-906ABC8E0C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AA523DA-A6EA-40D2-A172-906ABC8E0C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AA523DA-A6EA-40D2-A172-906ABC8E0C71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24594AB-246A-4715-BCCA-AF8407D6B6D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24594AB-246A-4715-BCCA-AF8407D6B6D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24594AB-246A-4715-BCCA-AF8407D6B6D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24594AB-246A-4715-BCCA-AF8407D6B6D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB781D2D-AF17-49D6-B65E-A734E2C9C84E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB781D2D-AF17-49D6-B65E-A734E2C9C84E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB781D2D-AF17-49D6-B65E-A734E2C9C84E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB781D2D-AF17-49D6-B65E-A734E2C9C84E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{553CBFF4-64E8-420C-B68C-2807F7435BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{553CBFF4-64E8-420C-B68C-2807F7435BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{553CBFF4-64E8-420C-B68C-2807F7435BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{553CBFF4-64E8-420C-B68C-2807F7435BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5AA523DA-A6EA-40D2-A172-906ABC8E0C71} = {158176CD-960E-4288-ABF9-D517F41EF882}
+		{C24594AB-246A-4715-BCCA-AF8407D6B6D1} = {75814F7B-E497-4CBF-82B3-8D167B31FCC7}
+		{FB781D2D-AF17-49D6-B65E-A734E2C9C84E} = {75814F7B-E497-4CBF-82B3-8D167B31FCC7}
+		{553CBFF4-64E8-420C-B68C-2807F7435BFF} = {9982F72F-EB08-4F7F-A666-7D620CDC0D0F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E827636-1A53-496A-A35C-B5AEFC08A340}
+	EndGlobalSection
+EndGlobal
