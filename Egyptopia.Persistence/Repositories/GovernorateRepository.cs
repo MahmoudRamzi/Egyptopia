@@ -9,6 +9,7 @@ namespace Egyptopia.Persistence.Repositories
     {
         public GovernorateRepository(DataContext dataContext) : base(dataContext)
         {
+
         }
     }
 }

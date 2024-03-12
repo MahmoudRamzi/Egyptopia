@@ -1,7 +1,7 @@
 ﻿namespace Egyptopia.Application.Repositories
 {
 
-    public interface IBaseRepository<T>where T : class
+    public interface IBaseRepository<T> where T : class
     {
         T? Create(T entity);
         T? Update(T entity);
