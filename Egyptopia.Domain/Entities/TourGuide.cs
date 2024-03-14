@@ -5,7 +5,7 @@ namespace Egyptopia.Domain.Entities
 {
     public class TourGuide : IEntityBase
     {
-        public Guid Id { get; set; }=Guid.NewGuid();
+        //public Guid Id { get; set; }=Guid.NewGuid();
         
         public int? Rating { get; set; }
         public string? IdentityNumber { get; set; }

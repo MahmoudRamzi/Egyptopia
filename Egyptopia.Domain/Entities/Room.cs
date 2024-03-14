@@ -6,7 +6,7 @@ namespace Egyptopia.Domain.Entities
 {
     public class Room:IEntityBase
     {
-        public Guid Id { get; set; }= Guid.NewGuid();
+        //public Guid Id { get; set; }= Guid.NewGuid();
         public string? RoomType { get; set; }
         public string? Description { get; set; }
         public string? CodeFrom {  get; set; }
