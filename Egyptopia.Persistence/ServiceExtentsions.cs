@@ -15,6 +15,13 @@ namespace Egyptopia.Persistence
             services.AddDbContext<DataContext>(options=>options.UseSqlServer(configuration.GetConnectionString("SqlServerConnectionString")));
             services.AddDbContext<DataContext>();
             services.AddScoped<IGovernorateRepository,GovernorateRepository>();
+            services.AddScoped<IHotelRepository,HotelRepository>();
+            services.AddScoped<IImageRepository,ImageRepository>();
+            services.AddScoped<IPlaceRepository,PlaceRepository>();
+            services.AddScoped<IRoomRepository,RoomRepository>();
+            services.AddScoped<ITourGuideRepository,TourGuideRepository>();
+            services.AddScoped<ITourGuideServiceRepository,TourGuideServiceRepository>();
+
         }
     }
 }
