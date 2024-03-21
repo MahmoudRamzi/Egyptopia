@@ -1,4 +1,5 @@
 ﻿using Egyptopia.Application.Repositories;
+using Egyptopia.Domain.Entities;
 using Egyptopia.Persistence.Context;
 using Egyptopia.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;

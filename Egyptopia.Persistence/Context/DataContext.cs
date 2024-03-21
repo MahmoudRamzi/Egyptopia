@@ -1,10 +1,11 @@
 ﻿using Egyptopia.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Egyptopia.Persistence.Context
 {
-    public class DataContext :IdentityDbContext
+    public class DataContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public DataContext(DbContextOptions options) : base(options)
         {
