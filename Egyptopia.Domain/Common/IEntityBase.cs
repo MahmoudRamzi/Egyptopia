@@ -1,6 +1,4 @@
-﻿
-
-namespace Egyptopia.Domain.Common
+﻿namespace Egyptopia.Domain.Common
 {
     /// <summary>
     /// change to normal class
@@ -9,6 +7,5 @@ namespace Egyptopia.Domain.Common
     {
         public Guid Id { get; set; } = new Guid();
         public string? Name { get; set; }
-
     }
 }

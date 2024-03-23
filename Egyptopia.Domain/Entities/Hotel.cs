@@ -1,9 +1,8 @@
-﻿
-using Egyptopia.Domain.Common;
+﻿using Egyptopia.Domain.Common;
 
 namespace Egyptopia.Domain.Entities
 {
-    public class Hotel:IEntityBase
+    public class Hotel : IEntityBase
     {
         //public Guid Id { get; set; }=new Guid();
         //public string? Name;
@@ -11,9 +10,5 @@ namespace Egyptopia.Domain.Entities
         public string? Description;
         public string? Location;
         public ICollection<Room>? Rooms { get; set; }
-
-
-
-
     }
 }

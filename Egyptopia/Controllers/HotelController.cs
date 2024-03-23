@@ -1,7 +1,6 @@
-﻿using Egyptopia.Domain.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Egyptopia.Application.Repositories;
+using Egyptopia.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Egyptopia.Application.Repositories;
 using System;
 
 namespace EgyptopiaApi.Controllers
@@ -11,10 +10,12 @@ namespace EgyptopiaApi.Controllers
     public class HotelController : ControllerBase
     {
         private readonly IHotelRepository _hotelRepository;
+
         public HotelController(IHotelRepository hotelRepository)
         {
             _hotelRepository = hotelRepository;
         }
+
         [HttpPost(nameof(CreateHotel))]
         public ActionResult<Hotel?> CreateHotel(Hotel hotel)
         {
@@ -25,16 +26,19 @@ namespace EgyptopiaApi.Controllers
             }
             return Ok(data);
         }
+
         [HttpGet(nameof(GetAllHotels))]
         public ActionResult<Hotel?> GetAllHotels()
         {
             return Ok(_hotelRepository.GetAll());
         }
+
         [HttpGet(nameof(GetHotel))]
         public ActionResult<Hotel?> GetHotel(Guid id)
         {
             return Ok(_hotelRepository.Get(id));
         }
+
         [HttpPut(nameof(UpdateHotel))]
         public ActionResult<Hotel?> UpdateHotel(Hotel hotel)
         {
@@ -42,6 +46,7 @@ namespace EgyptopiaApi.Controllers
                 return BadRequest();
             return Ok(_hotelRepository.Update(hotel));
         }
+
         [HttpDelete(nameof(DeleteHotel))]
         public void DeleteHotel(Guid id)
         {

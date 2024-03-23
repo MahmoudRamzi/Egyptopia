@@ -14,7 +14,7 @@ namespace Egyptopia.Persistence.Repositories
 
         T? IBaseRepository<T>.Create(T entity)
         {
-           var data = _dataContext.Add(entity).Entity;
+            var data = _dataContext.Add(entity).Entity;
             _dataContext.SaveChanges();
             return data;
         }
@@ -28,7 +28,6 @@ namespace Egyptopia.Persistence.Repositories
         T? IBaseRepository<T>.Get(Guid id)
         {
             return _dataContext.Set<T>().Find(id);
-            
         }
 
         List<T>? IBaseRepository<T>.GetAll()

@@ -1,5 +1,4 @@
-﻿
-using Egyptopia.Domain.Common;
+﻿using Egyptopia.Domain.Common;
 using Egyptopia.Domain.Enums;
 
 namespace Egyptopia.Domain.Entities
@@ -12,13 +11,7 @@ namespace Egyptopia.Domain.Entities
 
         //public Guid Id { get; set; } = Guid.NewGuid();
         public Guid EntityId { get; set; }
-        public ImageEntity ImageEntity {get; set;}
 
-        
-    
-
-
-
-
+        public ImageEntity ImageEntity { get; set; }
     }
 }

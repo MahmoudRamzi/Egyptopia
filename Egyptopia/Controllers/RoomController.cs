@@ -1,6 +1,5 @@
 ﻿using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -11,20 +10,24 @@ namespace EgyptopiaApi.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRoomRepository _roomRepository;
+
         public RoomController(IRoomRepository roomRepository)
         {
             _roomRepository = roomRepository;
         }
+
         [HttpGet(nameof(GetAllRooms))]
         public ActionResult<Room?> GetAllRooms()
         {
             return Ok(_roomRepository.GetAll());
         }
+
         [HttpGet(nameof(GetRoom))]
         public ActionResult<Room?> GetRoom(Guid id)
         {
             return Ok(_roomRepository.Get(id));
         }
+
         [HttpPost(nameof(CreateRoom))]
         public ActionResult<Room?> CreateRoom(Room room)
         {
@@ -35,6 +38,7 @@ namespace EgyptopiaApi.Controllers
             }
             return Ok(data);
         }
+
         [HttpPut(nameof(UpdateRoom))]
         public ActionResult<Room?> UpdateRoom(Room room)
         {
@@ -44,6 +48,7 @@ namespace EgyptopiaApi.Controllers
             }
             return Ok(_roomRepository.Update(room));
         }
+
         [HttpDelete(nameof(DeleteRoom))]
         public void DeleteRoom(Guid id)
         {

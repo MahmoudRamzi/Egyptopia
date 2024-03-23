@@ -1,6 +1,5 @@
 ﻿using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -11,20 +10,24 @@ namespace EgyptopiaApi.Controllers
     public class TourGuideServiceController : ControllerBase
     {
         private readonly ITourGuideServiceRepository _tourGuideServiceRepository;
+
         public TourGuideServiceController(ITourGuideServiceRepository tourGuideServiceRepository)
         {
             _tourGuideServiceRepository = tourGuideServiceRepository;
         }
+
         [HttpGet(nameof(GetAllTourGuideServices))]
         public ActionResult<TourGuideService?> GetAllTourGuideServices()
         {
             return Ok(_tourGuideServiceRepository.GetAll());
         }
+
         [HttpGet(nameof(GetTourGuideService))]
         public ActionResult<TourGuideService?> GetTourGuideService(Guid id)
         {
             return Ok(_tourGuideServiceRepository.Get(id));
         }
+
         [HttpPost(nameof(CreateTourGuideService))]
         public ActionResult<TourGuideService?> CreateTourGuideService(TourGuideService tourGuideService)
         {
@@ -33,6 +36,7 @@ namespace EgyptopiaApi.Controllers
                 return BadRequest();
             return Ok(data);
         }
+
         [HttpPut(nameof(UpdateTourGuideService))]
         public ActionResult<TourGuide?> UpdateTourGuideService(TourGuideService tourGuideService)
         {
@@ -40,6 +44,7 @@ namespace EgyptopiaApi.Controllers
                 return BadRequest();
             return Ok(_tourGuideServiceRepository.Update(tourGuideService));
         }
+
         [HttpDelete(nameof(DeleteTourGuideService))]
         public void DeleteTourGuideService(Guid id)
         {

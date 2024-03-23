@@ -1,11 +1,8 @@
 ﻿using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.Entities;
-using Egyptopia.Persistence.Context;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Drawing;
 
 namespace EgyptopiaApi.Controllers
 {
@@ -30,16 +27,20 @@ namespace EgyptopiaApi.Controllers
             }
             return Ok(data);
         }
+
+        [Authorize]
         [HttpGet(nameof(GetAllGovernorate))]
         public ActionResult<Governorate?> GetAllGovernorate()
         {
             return Ok(_governorateRepository.GetAll());
         }
+
         [HttpGet(nameof(GetGovernorate))]
         public ActionResult<Governorate?> GetGovernorate(Guid id)
         {
             return Ok(_governorateRepository.Get(id));
         }
+
         [HttpPut(nameof(UpdateGovernorate))]
         public ActionResult<Governorate?> UpdateGovernorate(Governorate governorate)
         {
@@ -47,6 +48,7 @@ namespace EgyptopiaApi.Controllers
                 return BadRequest();
             return Ok(_governorateRepository.Update(governorate));
         }
+
         [HttpDelete(nameof(DeleteGovernorate))]
         public void DeleteGovernorate(Guid id)
         {

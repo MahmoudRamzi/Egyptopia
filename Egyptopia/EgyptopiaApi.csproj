@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Egyptopia.Persistence\Egyptopia.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

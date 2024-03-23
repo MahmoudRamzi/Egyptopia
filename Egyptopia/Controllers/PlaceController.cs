@@ -1,6 +1,5 @@
 ﻿using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -11,20 +10,24 @@ namespace EgyptopiaApi.Controllers
     public class PlaceController : ControllerBase
     {
         private readonly IPlaceRepository _placeRepository;
+
         public PlaceController(IPlaceRepository placeRepository)
         {
             _placeRepository = placeRepository;
         }
+
         [HttpGet(nameof(GetAllPlaces))]
         public ActionResult<Place?> GetAllPlaces()
         {
             return Ok(_placeRepository.GetAll());
         }
+
         [HttpGet(nameof(GetPlace))]
         public ActionResult<Place?> GetPlace(Guid id)
         {
             return Ok(_placeRepository.Get(id));
         }
+
         [HttpPost(nameof(CreatePlace))]
         public ActionResult<Place?> CreatePlace(Place place)
         {
@@ -35,6 +38,7 @@ namespace EgyptopiaApi.Controllers
             }
             return Ok(data);
         }
+
         [HttpPut(nameof(UpdatePlace))]
         public ActionResult<Place?> UpdatePlace(Place place)
         {
@@ -42,6 +46,7 @@ namespace EgyptopiaApi.Controllers
                 return BadRequest();
             return Ok(_placeRepository.Update(place));
         }
+
         [HttpDelete(nameof(DeletePlace))]
         public void DeletePlace(Guid id)
         {

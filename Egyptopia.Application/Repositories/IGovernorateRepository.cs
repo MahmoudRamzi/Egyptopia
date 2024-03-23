@@ -1,10 +1,8 @@
-﻿
-using Egyptopia.Domain.Entities;
+﻿using Egyptopia.Domain.Entities;
 
 namespace Egyptopia.Application.Repositories
 {
-    public interface IGovernorateRepository:IBaseRepository<Governorate>
+    public interface IGovernorateRepository : IBaseRepository<Governorate>
     {
-
     }
 }
