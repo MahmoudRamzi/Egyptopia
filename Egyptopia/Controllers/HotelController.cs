@@ -1,5 +1,6 @@
 ﻿using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.Entities;
+using Egyptopia.Persistence.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -48,9 +49,14 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpDelete(nameof(DeleteHotel))]
-        public void DeleteHotel(Guid id)
+
+        public ActionResult DeleteHotel(Guid id)
         {
-            _hotelRepository.Delete(id);
+            var entity = _hotelRepository.Get(id);
+            if (entity == null)
+                return NotFound();
+            _hotelRepository.Delete(entity);
+            return Ok();
         }
     }
 }

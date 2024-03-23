@@ -1,6 +1,7 @@
 using Egyptopia.Domain.Entities;
 using Egyptopia.Persistence;
 using Egyptopia.Persistence.Context;
+using EgyptopiaApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,7 @@ builder.Services.AddIdentityApiEndpoints<ApplicationUser>(options =>
 
 // Add services to the container.
 builder.Services.ConfigurePersistance(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -64,6 +66,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseHsts();
 app.UseHttpsRedirection();
 app.UseStaticFiles();

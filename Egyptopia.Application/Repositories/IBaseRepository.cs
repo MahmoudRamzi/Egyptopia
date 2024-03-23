@@ -6,7 +6,7 @@
 
         T? Update(T entity);
 
-        void Delete(Guid id);
+        void Delete(T entity);
 
         T? Get(Guid id);
 

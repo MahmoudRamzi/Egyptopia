@@ -46,9 +46,13 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpDelete(nameof(DeleteTourGuideService))]
-        public void DeleteTourGuideService(Guid id)
+        public ActionResult DeleteTourGuideService(Guid id)
         {
-            _tourGuideServiceRepository.Delete(id);
+            var entity = _tourGuideServiceRepository.Get(id);
+            if (entity == null)
+                return NotFound();
+            _tourGuideServiceRepository.Delete(entity);
+            return Ok();
         }
     }
 }

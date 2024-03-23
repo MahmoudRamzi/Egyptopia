@@ -2,7 +2,7 @@
 
 namespace Egyptopia.Domain.Entities
 {
-    public class Governorate : IEntityBase
+    public class Governorate : EntityBase
     {
         //public Guid Id { get; set; }=Guid.NewGuid();
         public string? Name { get; set; }

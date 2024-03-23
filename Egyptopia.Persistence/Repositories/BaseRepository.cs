@@ -19,9 +19,9 @@ namespace Egyptopia.Persistence.Repositories
             return data;
         }
 
-        void IBaseRepository<T>.Delete(Guid id)
+        void IBaseRepository<T>.Delete(T entity)
         {
-            _dataContext.Remove(id);
+            _dataContext.Remove(entity);
             _dataContext.SaveChanges();
         }
 

@@ -48,9 +48,13 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpDelete(nameof(DeletePlace))]
-        public void DeletePlace(Guid id)
+        public ActionResult DeletePlace(Guid id)
         {
-            _placeRepository.Delete(id);
+            var entity = _placeRepository.Get(id);
+            if (entity == null)
+                return NotFound();
+            _placeRepository.Delete(entity);
+            return Ok();
         }
     }
 }

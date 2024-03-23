@@ -2,7 +2,7 @@
 
 namespace Egyptopia.Domain.Entities
 {
-    public class Hotel : IEntityBase
+    public class Hotel : EntityBase
     {
         //public Guid Id { get; set; }=new Guid();
         //public string? Name;

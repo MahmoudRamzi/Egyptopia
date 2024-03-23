@@ -2,7 +2,7 @@
 
 namespace Egyptopia.Domain.Entities
 {
-    public class Place : IEntityBase
+    public class Place : EntityBase
     {
         //public Guid Id { get; set; }= Guid.NewGuid();
         //public string? Name { get; set; }

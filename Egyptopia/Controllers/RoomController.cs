@@ -50,9 +50,13 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpDelete(nameof(DeleteRoom))]
-        public void DeleteRoom(Guid id)
+        public ActionResult DeleteRoom(Guid id)
         {
-            _roomRepository.Delete(id);
+            var entity = _roomRepository.Get(id);
+            if (entity == null)
+                return NotFound();
+            _roomRepository.Delete(entity);
+            return Ok();
         }
     }
 }
