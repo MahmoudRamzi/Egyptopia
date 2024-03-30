@@ -2,7 +2,8 @@
 
 namespace Egyptopia.Application.Repositories
 {
-    public interface IBookingRepository:IBaseRepository<Booking>
+    public interface IBookingRepository : IBaseRepository<Booking>
     {
+        Task<List<int>> GetRemainingRooms(Guid hotelId, string roomType, DateTime checkInDate, DateTime checkOutDate);
     }
 }

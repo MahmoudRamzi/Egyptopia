@@ -34,7 +34,7 @@ namespace EgyptopiaApi.Controllers
             return Ok(data);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet(nameof(GetAllHotel))]
         public ActionResult<List<HotelModel>> GetAllHotel()
         {

@@ -24,6 +24,8 @@ CreateMap<ImageModel, Image>()
     });
             CreateMap<Booking, BookingModel>();
             CreateMap<BookingModel, Booking>();
+            CreateMap<Hotel, HotelModel>();
+            CreateMap<HotelModel, Hotel>();
 
 
 

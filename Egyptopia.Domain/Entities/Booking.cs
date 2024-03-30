@@ -15,6 +15,7 @@ namespace Egyptopia.Domain.Entities
 
         public DateTime BookingDate { get; set; } // Date of booking
         public DateTime CheckInDate { get; set; }
+        public DateTime CheckOutDate { get; set; }
 
         //public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -26,7 +27,8 @@ namespace Egyptopia.Domain.Entities
         public Guid? RoomId { get; set; }
         [ForeignKey("RoomId")]
         public virtual Room Room { get; set; }
-        public decimal TotalAmount { get; set; }
+        public int RoomNumber { get; set; }
+        public double TotalAmount { get; set; }
 
 
     }

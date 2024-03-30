@@ -15,6 +15,7 @@ namespace Egyptopia.Persistence.Context
         public DbSet<Image> Images { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
         public DbSet<TourGuide> TourGuids { get; set; }
         public DbSet<TourGuideService> TourGuideServices { get; set; }
 

@@ -4,6 +4,7 @@ using Egyptopia.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Egyptopia.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240330175648_added-booking")]
+    partial class addedbooking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,14 +143,8 @@ namespace Egyptopia.Persistence.Migrations
                     b.Property<DateTime>("CheckInDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CheckOutDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid?>("RoomId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
 
                     b.Property<double>("TotalAmount")
                         .HasColumnType("float");
@@ -161,7 +158,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("TourGuideId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Governorate", b =>
@@ -245,23 +242,20 @@ namespace Egyptopia.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CodeFrom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CodeTo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("HotelId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("NumberFrom")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberTo")
-                        .HasColumnType("int");
-
                     b.Property<double>("Price")
                         .HasColumnType("float");
-
-                    b.Property<int>("RoomCount")
-                        .HasColumnType("int");
 
                     b.Property<string>("RoomType")
                         .HasColumnType("nvarchar(max)");

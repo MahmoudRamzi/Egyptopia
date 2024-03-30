@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EgyptopiaApi.Controllers
 {
@@ -16,13 +18,19 @@ namespace EgyptopiaApi.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly IRoomRepository _roomRepository;
         private readonly IMapper _mapper;
         public BookingController(
             IBookingRepository bookingRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IRoomRepository roomRepository
+            )
         {
             _bookingRepository = bookingRepository;
             _mapper = mapper;
+            
+            _roomRepository = roomRepository;
+
         }
 
         [HttpPost(nameof(CreateBooking))]
@@ -70,5 +78,29 @@ namespace EgyptopiaApi.Controllers
             _bookingRepository.Delete(entity);
             return Ok();
         }
+        [HttpGet(nameof(GetRemainingRooms))]
+        public async Task <ActionResult<List<int>>> GetRemainingRooms(Guid hotelId,string roomType , DateTime checkInDate,DateTime checkOutDate)
+        {
+            return Ok(await _bookingRepository.GetRemainingRooms(hotelId,roomType,checkInDate,checkOutDate));
+        }
+        [HttpPost(nameof(CreateRoomBooking))]
+        public async Task <ActionResult<BookingModel?>> CreateRoomBooking(BookingModel model)
+        {
+            var room=_roomRepository.Get(model.RoomId.GetValueOrDefault());
+            var roomNumber =await _bookingRepository.GetRemainingRooms(room.HotelId.GetValueOrDefault(),room.RoomType,model.CheckInDate,model.CheckOutDate);
+            if (!roomNumber.Any())
+            {
+                return BadRequest("no empty room");
+            }
+            model.RoomNumber = roomNumber.FirstOrDefault();
+            var data = _bookingRepository.Create(_mapper.Map<Booking>(model));
+
+            if (data == null)
+            {
+                return BadRequest();
+            }
+            return Ok(data);
+        }
+
     }
 }

@@ -9,16 +9,16 @@ namespace EgyptopiaApi.Models
         public DateTime BookingDate { get; set; } // Date of booking
         public DateTime CheckInDate { get; set; }
 
-        public Guid Id { get; set; } 
-
+        public Guid Id { get; set; }= Guid.NewGuid();
+        public DateTime CheckOutDate { get; set; }
         public Guid? TourGuideId { get; set; }
-        [ForeignKey("TourGuideId")]
-        public virtual TourGuide? TourGuide { get; set; }
+        
+        public int RoomNumber { get; set; }
 
         // Foreign key for Room (nullable)
         public Guid? RoomId { get; set; }
-        [ForeignKey("RoomId")]
-        public virtual Room? Room { get; set; }
+     
+      
         public decimal TotalAmount { get; set; }
     }
 }
