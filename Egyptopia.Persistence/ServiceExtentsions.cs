@@ -18,6 +18,7 @@ namespace Egyptopia.Persistence
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IPlaceRepository, PlaceRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<ITourGuideRepository, TourGuideRepository>();
             services.AddScoped<ITourGuideServiceRepository, TourGuideServiceRepository>();
         }

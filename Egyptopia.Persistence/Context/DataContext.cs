@@ -9,7 +9,7 @@ namespace Egyptopia.Persistence.Context
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-
+        
         public DbSet<Governorate> Governorates { get; set; }
         public DbSet<Place> Places { get; set; }
         public DbSet<Image> Images { get; set; }
@@ -38,6 +38,16 @@ namespace Egyptopia.Persistence.Context
                     e.TourGuideId,
                     e.PlaceId
                 });
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.TourGuide)
+                .WithMany()
+                .HasForeignKey(b => b.TourGuideId);
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Room)
+                .WithMany()
+                .HasForeignKey(b => b.RoomId);
+                
         }
     }
 }

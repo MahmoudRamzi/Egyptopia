@@ -1,7 +1,11 @@
-﻿using Egyptopia.Application.Repositories;
+﻿using AutoMapper;
+using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.Entities;
+using EgyptopiaApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 
 namespace EgyptopiaApi.Controllers
 {
@@ -10,39 +14,49 @@ namespace EgyptopiaApi.Controllers
     public class TourGuideController : ControllerBase
     {
         private readonly ITourGuideRepository _tourGuideRepository;
+        private readonly IMapper _mapper;
 
-        public TourGuideController(ITourGuideRepository tourGuideRepository)
+        public TourGuideController(
+            ITourGuideRepository tourGuideRepository,
+            IMapper mapper)
         {
             _tourGuideRepository = tourGuideRepository;
-        }
-
-        [HttpGet(nameof(GetAllTourGuides))]
-        public ActionResult<TourGuide?> GetAllTourGuides()
-        {
-            return Ok(_tourGuideRepository.GetAll());
-        }
-
-        [HttpGet(nameof(GetTourGuide))]
-        public ActionResult<TourGuide?> GetTourGuide(Guid id)
-        {
-            return Ok(_tourGuideRepository.Get(id));
+            _mapper = mapper;
         }
 
         [HttpPost(nameof(CreateTourGuide))]
-        public ActionResult<TourGuide?> CreateTourGuide(TourGuide tourGuide)
+        public ActionResult<TourGuideModel?> CreateTourGuide(TourGuideModel model)
         {
-            var data = _tourGuideRepository.Create(tourGuide);
+            var data = _tourGuideRepository.Create(_mapper.Map<TourGuide>(model));
             if (data == null)
+            {
                 return BadRequest();
+            }
             return Ok(data);
         }
 
-        [HttpPut(nameof(UpdateTourGuide))]
-        public ActionResult<TourGuide?> UpdateTourGuide(TourGuide tourGuide)
+        [Authorize]
+        [HttpGet(nameof(GetAllTourGuide))]
+        public ActionResult<List<TourGuideModel>> GetAllTourGuide()
         {
-            if (tourGuide == null)
+            return Ok(_mapper.Map<List<TourGuideModel>>(_tourGuideRepository.GetAll()));
+        }
+
+        [HttpGet(nameof(GetTourGuide))]
+        public ActionResult<TourGuideModel?> GetTourGuide(Guid id)
+        {
+            return Ok(_mapper.Map<TourGuideModel>(_tourGuideRepository.Get(id)));
+        }
+
+        [HttpPut(nameof(UpdateTourGuide))]
+        public ActionResult<TourGuideModel?> UpdateTourGuide(TourGuideModel model)
+        {
+            if (model == null)
                 return BadRequest();
-            return Ok(_tourGuideRepository.Update(tourGuide));
+            var entity = _tourGuideRepository.Get(model.Id);
+            if (entity == null)
+                return NotFound();
+            return Ok(_tourGuideRepository.Update(_mapper.Map(model, entity)));
         }
 
         [HttpDelete(nameof(DeleteTourGuide))]
@@ -51,6 +65,7 @@ namespace EgyptopiaApi.Controllers
             var entity = _tourGuideRepository.Get(id);
             if (entity == null)
                 return NotFound();
+
             _tourGuideRepository.Delete(entity);
             return Ok();
         }
