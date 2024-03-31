@@ -18,6 +18,7 @@ namespace Egyptopia.Persistence.Context
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<TourGuide> TourGuids { get; set; }
         public DbSet<TourGuideService> TourGuideServices { get; set; }
+        public DbSet<HotelComment> HotelComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,21 @@ namespace Egyptopia.Persistence.Context
                 .HasOne(e => e.Hotel)
                 .WithMany(e => e.Rooms)
                 .HasForeignKey(e => e.HotelId);
+
+            modelBuilder.Entity<Hotel>()
+                .HasOne(e => e.Governorate)
+                .WithMany(e => e.Hotels)
+                .HasForeignKey(e => e.GovernorateId);
+
+            modelBuilder.Entity<HotelComment>()
+                .HasOne(e => e.Hotel)
+                .WithMany(e => e.HotelComments)
+                .HasForeignKey(e => e.HotelId);
+
+            modelBuilder.Entity<HotelComment>()
+                .HasOne(e => e.ApplicationUser)
+                .WithMany(e => e.HotelComments)
+                .HasForeignKey(e => e.ApplicationUserId);
 
             modelBuilder.Entity<TourGuideService>()
                 .HasKey(e => new

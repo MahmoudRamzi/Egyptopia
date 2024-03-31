@@ -10,7 +10,7 @@ namespace Egyptopia.Domain.Entities
         [ForeignKey("Place")]
         public Guid PlaceId { get; set; }
 
-        public virtual Place? Place { get; set; }
-        public virtual TourGuide? TourGuide { get; set; }
+        public virtual Place Place { get; set; }
+        public virtual TourGuide TourGuide { get; set; }
     }
 }

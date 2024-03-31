@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using Egyptopia.Application.Repositories;
+using Egyptopia.Domain.DTOs.Hotel;
+using Egyptopia.Domain.DTOs.HotelComment;
 using Egyptopia.Domain.Entities;
 using EgyptopiaApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 
 namespace EgyptopiaApi.Controllers
 {
@@ -34,17 +35,16 @@ namespace EgyptopiaApi.Controllers
             return Ok(data);
         }
 
-        //[Authorize]
-        [HttpGet(nameof(GetAllHotel))]
-        public ActionResult<List<HotelModel>> GetAllHotel()
+        [HttpGet(nameof(GetAllHotels))]
+        public ActionResult<Hotel?> GetAllHotels()
         {
-            return Ok(_mapper.Map<List<HotelModel>>(_hotelRepository.GetAll()));
+            return Ok(_hotelRepository.GetAll());
         }
 
         [HttpGet(nameof(GetHotel))]
-        public ActionResult<HotelModel?> GetHotel(Guid id)
+        public ActionResult<Hotel?> GetHotel(Guid id)
         {
-            return Ok(_mapper.Map<HotelModel>(_hotelRepository.Get(id)));
+            return Ok(_hotelRepository.Get(id));
         }
 
         [HttpPut(nameof(UpdateHotel))]

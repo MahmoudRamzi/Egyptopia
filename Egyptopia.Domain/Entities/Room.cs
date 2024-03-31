@@ -4,18 +4,15 @@ namespace Egyptopia.Domain.Entities
 {
     public class Room : EntityBase
     {
-        
-        //enum roomtype?
-
+        //public Guid Id { get; set; }= Guid.NewGuid();
         public string? RoomType { get; set; }
 
         public string? Description { get; set; }
-        public int NumberFrom { get; set; }
-        public int NumberTo { get; set; }
-        public int RoomCount { get; set; }
+        public string? CodeFrom { get; set; }
+        public string? CodeTo { get; set; }
         public double Price { get; set; }
-        public Guid? HotelId { get; set; }
+        public Guid HotelId { get; set; }
 
-        public virtual Hotel? Hotel { get; set; }
+        public virtual Hotel Hotel { get; set; }
     }
 }

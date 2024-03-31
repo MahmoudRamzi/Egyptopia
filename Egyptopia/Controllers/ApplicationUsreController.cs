@@ -118,7 +118,7 @@ namespace EgyptopiaApi.Controllers
         {
             var NewUser = new ApplicationUser
             {
-                UserName = registerDTO.FirstName +"_"+ registerDTO.LastName,
+                UserName = $"{registerDTO.FirstName}_{registerDTO.LastName}{registerDTO.DOB.Day}{registerDTO.DOB.Month}{registerDTO.DOB.Year}",
                 Email = registerDTO.Email,
                 Country = registerDTO.Country,
                 DOB = registerDTO.DOB,
@@ -136,7 +136,7 @@ namespace EgyptopiaApi.Controllers
             var UserClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, NewUser.Email),
-                    new Claim(ClaimTypes.NameIdentifier ,registerDTO.FirstName +" "+ registerDTO.LastName),
+                    new Claim(ClaimTypes.NameIdentifier ,$"{registerDTO.FirstName} {registerDTO.LastName}"),
                     new Claim(ClaimTypes.MobilePhone, registerDTO.PhoneNumber),
                     new Claim("Country",registerDTO.Country),
                     new Claim(ClaimTypes.Role, registerDTO.Role),

@@ -4,6 +4,7 @@ using Egyptopia.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Egyptopia.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240328142914_addnametoentitybase")]
+    partial class addnametoentitybase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,42 +131,6 @@ namespace Egyptopia.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Egyptopia.Domain.Entities.Booking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CheckInDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CheckOutDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
-
-                    b.Property<Guid?>("TourGuideId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("TourGuideId");
-
-                    b.ToTable("Bookings");
-                });
-
             modelBuilder.Entity("Egyptopia.Domain.Entities.Governorate", b =>
                 {
                     b.Property<Guid>("Id")
@@ -190,9 +157,6 @@ namespace Egyptopia.Persistence.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("GovernorateId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
@@ -200,8 +164,6 @@ namespace Egyptopia.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GovernorateId");
 
                     b.ToTable("Hotels");
                 });
@@ -262,17 +224,23 @@ namespace Egyptopia.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CodeFrom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CodeTo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("HotelId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
-
-                    b.Property<int>("RoomCount")
-                        .HasColumnType("int");
 
                     b.Property<string>("RoomType")
                         .HasColumnType("nvarchar(max)");
@@ -520,8 +488,6 @@ namespace Egyptopia.Persistence.Migrations
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Governorate", b =>
                 {
-                    b.Navigation("Hotels");
-
                     b.Navigation("Places");
                 });
 
