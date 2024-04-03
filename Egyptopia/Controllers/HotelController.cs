@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Egyptopia.Application.Repositories;
-using Egyptopia.Domain.DTOs.Hotel;
-using Egyptopia.Domain.DTOs.HotelComment;
 using Egyptopia.Domain.Entities;
 using EgyptopiaApi.Models;
 using Microsoft.AspNetCore.Authorization;

@@ -18,7 +18,6 @@ namespace Egyptopia.Persistence.Context
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<TourGuide> TourGuids { get; set; }
         public DbSet<TourGuideService> TourGuideServices { get; set; }
-        public DbSet<HotelComment> HotelComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
