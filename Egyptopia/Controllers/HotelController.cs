@@ -7,6 +7,10 @@ using EgyptopiaApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EgyptopiaApi.Controllers
 {
@@ -25,9 +29,15 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpPost(nameof(CreateHotel))]
-        public ActionResult<HotelModel?> CreateHotel(HotelModel model)
+        public ActionResult<Hotel> CreateHotel(WriteHotel writeHotel)
         {
-            var data = _hotelRepository.Create(_mapper.Map<Hotel>(model));
+            var hotel = new Hotel
+            {
+                Name = writeHotel.Name,
+                Location = writeHotel.Location,
+                Description = writeHotel.Description,
+            };
+            var data = _hotelRepository.Create(hotel);
             if (data == null)
             {
                 return BadRequest();
@@ -35,16 +45,58 @@ namespace EgyptopiaApi.Controllers
             return Ok(data);
         }
 
-        [HttpGet(nameof(GetAllHotels))]
-        public ActionResult<Hotel?> GetAllHotels()
+        //[Authorize]
+        [HttpGet(nameof(GetAllHotel))]
+        public ActionResult<List<ReadHotel>> GetAllHotel()
         {
-            return Ok(_hotelRepository.GetAll());
+            var hotels = _hotelRepository.GetAllWithComments();
+            if (hotels == null)
+            {
+                return NotFound();
+            }
+            var hotelsDto = hotels
+                .Select(h => new ReadHotel
+               {
+               Id = h.Id,
+               Name = h.Name,
+               Description = h.Description,
+               Location = h.Location,
+               Rate = CalculateRate((List<HotelComment>)h.HotelComments),
+               Comments = h.HotelComments
+                   .Select(c => new HotelCommentDTO
+                   {
+                       Comments = c.Comments,
+                       PublishedDate = c.PublishedDate,
+                       Rating = c.Rating,
+                   }).ToList()
+           }).ToList();
+            return Ok(hotelsDto);
         }
 
         [HttpGet(nameof(GetHotel))]
-        public ActionResult<Hotel?> GetHotel(Guid id)
+        public ActionResult<ReadHotel> GetHotel(Guid id)
         {
-            return Ok(_hotelRepository.Get(id));
+            var hotel = _hotelRepository.GetWithComments(id);
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+            var hotelDTo = new ReadHotel
+            {
+                Id= hotel.Id,
+                Name = hotel.Name,
+                Description = hotel.Description,
+                Location = hotel.Location,
+                Rate = CalculateRate(hotel.HotelComments),
+                Comments = hotel.HotelComments
+                  .Select(c => new HotelCommentDTO
+                  {
+                      Comments = c.Comments,
+                      PublishedDate = c.PublishedDate,
+                      Rating = c.Rating,
+                  }).ToList()
+            };
+            return Ok(hotelDTo);
         }
 
         [HttpPut(nameof(UpdateHotel))]
@@ -67,6 +119,27 @@ namespace EgyptopiaApi.Controllers
 
             _hotelRepository.Delete(entity);
             return Ok();
+        }
+        [HttpGet(nameof(GetAllWithFiltertion))]
+        public async Task<ActionResult<List<ReadHotel>>> GetAllWithFiltertion(string? term, string? sort, int page=1, int limit = 5)
+        {
+            var hotelResult = await _hotelRepository.GetAllWithFiltertion(term, sort, page, limit);
+            //add pagination header to the response
+            Response.Headers.Add("Hotels-Total-Count",hotelResult.TotalCount.ToString());
+            Response.Headers.Add("Hotels-Total-Pages", hotelResult.TotalPages.ToString());
+            return Ok(hotelResult.hotels);
+
+        }
+        public static int CalculateRate(List<HotelComment> comments)
+        {
+            if (comments.Count > 0)
+            {
+                return (comments.Sum(s => s.Rating) / comments.Count);
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

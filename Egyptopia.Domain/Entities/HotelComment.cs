@@ -9,13 +9,12 @@ namespace Egyptopia.Domain.Entities
 {
     public class HotelComment:EntityBase
     {
+        public int Rating {  get; set; }
         public string Comments { get; set; }
-        public DateTime PublishedDate { get; set; }
-        public Guid HotelId {  get; set; } 
-        public Hotel Hotel { get; set; }
+        public DateOnly PublishedDate { get; set; }
         public Guid ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
-        public int Rating { get; set; }
-
+        public Guid HotelId { get; set; }
+        public Hotel Hotel { get; set; }
     }
 }

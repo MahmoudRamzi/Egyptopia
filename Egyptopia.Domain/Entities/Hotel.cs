@@ -12,7 +12,7 @@ namespace Egyptopia.Domain.Entities
         public Guid GovernorateId { get; set; }
 
         public Governorate Governorate { get; set; }
-        public ICollection<HotelComment> HotelComments { get; set; }
+        public List<HotelComment> HotelComments { get; set; }
         public ICollection<Room> Rooms { get; set; }
     }
 }

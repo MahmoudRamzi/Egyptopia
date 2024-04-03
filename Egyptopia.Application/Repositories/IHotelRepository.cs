@@ -1,4 +1,5 @@
-﻿using Egyptopia.Domain.Entities;
+﻿using Egyptopia.Domain.DTOs.Paged;
+using Egyptopia.Domain.Entities;
 
 namespace Egyptopia.Application.Repositories
 {
@@ -6,5 +7,8 @@ namespace Egyptopia.Application.Repositories
     {
         Hotel GetWithComments(Guid id);
         List<Hotel> GetAllWithComments();
+        Task<PagedHotelResult> GetAllWithFiltertion(string? term , string? sort , int page , int limit);
+        IQueryable<Hotel> FilterByTerm(string term);
+        Task<PagedHotelResult> Pagination(int page, int limit, IQueryable<Hotel> hotels);
     }
 }

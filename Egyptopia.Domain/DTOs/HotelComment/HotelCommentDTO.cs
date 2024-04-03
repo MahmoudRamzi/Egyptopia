@@ -9,8 +9,8 @@ namespace Egyptopia.Domain.DTOs.HotelComment
 {
     public class HotelCommentDTO
     {
-        public string Comments { get; set; }
-        public DateTime PublishedDate { get; set; }
         public int Rating { get; set; }
+        public string Comments { get; set; }
+        public DateOnly PublishedDate { get; set; }
     }
 }

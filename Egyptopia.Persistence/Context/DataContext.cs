@@ -64,7 +64,17 @@ namespace Egyptopia.Persistence.Context
                 .HasOne(b => b.Room)
                 .WithMany()
                 .HasForeignKey(b => b.RoomId);
-                
+
+            modelBuilder.Entity<HotelComment>()
+                .HasOne(b => b.ApplicationUser)
+                .WithMany(b => b.HotelComments)
+                .HasForeignKey(b => b.ApplicationUserId);
+
+            modelBuilder.Entity<HotelComment>()
+                .HasOne(b => b.Hotel)
+                .WithMany(b => b.HotelComments)
+                .HasForeignKey(b => b.HotelId);
+
         }
     }
 }

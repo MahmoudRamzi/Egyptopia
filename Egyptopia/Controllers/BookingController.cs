@@ -87,7 +87,7 @@ namespace EgyptopiaApi.Controllers
         public async Task <ActionResult<BookingModel?>> CreateRoomBooking(BookingModel model)
         {
             var room=_roomRepository.Get(model.RoomId.GetValueOrDefault());
-            var roomNumber =await _bookingRepository.GetRemainingRooms(room.HotelId.GetValueOrDefault(),room.RoomType,model.CheckInDate,model.CheckOutDate);
+            var roomNumber =await _bookingRepository.GetRemainingRooms(room.HotelId,room.RoomType,model.CheckInDate,model.CheckOutDate);
             if (!roomNumber.Any())
             {
                 return BadRequest("no empty room");
