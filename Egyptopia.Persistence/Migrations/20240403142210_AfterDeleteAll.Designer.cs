@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Egyptopia.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240330175648_added-booking")]
-    partial class addedbooking
+    [Migration("20240403142210_AfterDeleteAll")]
+    partial class AfterDeleteAll
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,8 +143,17 @@ namespace Egyptopia.Persistence.Migrations
                     b.Property<DateTime>("CheckInDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("CheckOutDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("RoomId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RoomNumber")
+                        .HasColumnType("int");
 
                     b.Property<double>("TotalAmount")
                         .HasColumnType("float");
@@ -158,7 +167,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("TourGuideId");
 
-                    b.ToTable("Booking");
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Governorate", b =>
@@ -184,9 +193,51 @@ namespace Egyptopia.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Hotels");
+                });
+
+            modelBuilder.Entity("Egyptopia.Domain.Entities.HotelComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("HotelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("PublishedDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("HotelComment");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Image", b =>
@@ -224,6 +275,9 @@ namespace Egyptopia.Persistence.Migrations
                     b.Property<Guid>("GovernorateId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("TourGuideId")
                         .HasColumnType("uniqueidentifier");
 
@@ -242,20 +296,26 @@ namespace Egyptopia.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CodeFrom")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CodeTo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("HotelId")
+                    b.Property<Guid>("HotelId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberFrom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberTo")
+                        .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<int>("RoomCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("RoomType")
                         .HasColumnType("nvarchar(max)");
@@ -274,6 +334,9 @@ namespace Egyptopia.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("IdentityNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Rating")
@@ -417,6 +480,25 @@ namespace Egyptopia.Persistence.Migrations
                     b.Navigation("TourGuide");
                 });
 
+            modelBuilder.Entity("Egyptopia.Domain.Entities.HotelComment", b =>
+                {
+                    b.HasOne("Egyptopia.Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("HotelComments")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Egyptopia.Domain.Entities.Hotel", "Hotel")
+                        .WithMany("HotelComments")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Hotel");
+                });
+
             modelBuilder.Entity("Egyptopia.Domain.Entities.Place", b =>
                 {
                     b.HasOne("Egyptopia.Domain.Entities.Governorate", "Governorate")
@@ -436,7 +518,9 @@ namespace Egyptopia.Persistence.Migrations
                 {
                     b.HasOne("Egyptopia.Domain.Entities.Hotel", "Hotel")
                         .WithMany("Rooms")
-                        .HasForeignKey("HotelId");
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Hotel");
                 });
@@ -511,6 +595,11 @@ namespace Egyptopia.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Egyptopia.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("HotelComments");
+                });
+
             modelBuilder.Entity("Egyptopia.Domain.Entities.Governorate", b =>
                 {
                     b.Navigation("Places");
@@ -518,6 +607,8 @@ namespace Egyptopia.Persistence.Migrations
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Hotel", b =>
                 {
+                    b.Navigation("HotelComments");
+
                     b.Navigation("Rooms");
                 });
 

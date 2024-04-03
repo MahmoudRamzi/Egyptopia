@@ -9,6 +9,6 @@ namespace Egyptopia.Domain.Entities
 
         public string Description { get; set; }
         public ICollection<Place> Places { get; set; }
-        public ICollection<Hotel> Hotels { get; set; }
+        //public ICollection<Hotel> Hotels { get; set; }
     }
 }

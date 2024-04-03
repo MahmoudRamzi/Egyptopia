@@ -201,8 +201,6 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GovernorateId");
-
                     b.ToTable("Hotels");
                 });
 
@@ -236,7 +234,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("HotelComments");
+                    b.ToTable("HotelComment");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Image", b =>
@@ -338,7 +336,7 @@ namespace Egyptopia.Persistence.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rating")
+                    b.Property<int?>("Rating")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -601,8 +599,6 @@ namespace Egyptopia.Persistence.Migrations
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Governorate", b =>
                 {
-                    b.Navigation("Hotels");
-
                     b.Navigation("Places");
                 });
 

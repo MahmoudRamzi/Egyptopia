@@ -1,4 +1,5 @@
 ﻿using Egyptopia.Domain.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Egyptopia.Domain.Entities
 {
@@ -9,9 +10,10 @@ namespace Egyptopia.Domain.Entities
 
         public string Description { get; set; }
         public string Location { get; set; }
-        public Guid GovernorateId { get; set; }
+        //[ForeignKey("Governorate")]
+        //public Guid GovernorateId { get; set; }
+        //public virtual Governorate Governorate { get; set; }
 
-        public Governorate Governorate { get; set; }
         public List<HotelComment> HotelComments { get; set; }
         public ICollection<Room> Rooms { get; set; }
     }
