@@ -2,7 +2,9 @@
 using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.DTOs.Hotel;
 using Egyptopia.Domain.DTOs.HotelComment;
+using Egyptopia.Domain.DTOs.Image;
 using Egyptopia.Domain.Entities;
+using Egyptopia.Domain.Enums;
 using EgyptopiaApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +20,14 @@ namespace EgyptopiaApi.Controllers
     [ApiController]
     public class HotelController : ControllerBase
     {
+        private readonly IImageRepository _imageRepository;
         private readonly IHotelRepository _hotelRepository;
         private readonly IMapper _mapper;
-        public HotelController(
-            IHotelRepository hotelRepository,
-            IMapper mapper)
+        public HotelController(IHotelRepository hotelRepository,IMapper mapper,IImageRepository imageRepository)
         {
             _hotelRepository = hotelRepository;
             _mapper = mapper;
+            _imageRepository = imageRepository;
         }
 
         [HttpPost(nameof(CreateHotel))]
@@ -56,20 +58,32 @@ namespace EgyptopiaApi.Controllers
             }
             var hotelsDto = hotels
                 .Select(h => new ReadHotel
-               {
-               Id = h.Id,
-               Name = h.Name,
-               Description = h.Description,
-               Location = h.Location,
-               Rate = CalculateRate((List<HotelComment>)h.HotelComments),
-               Comments = h.HotelComments
+                {
+                    Id = h.Id,
+                    Name = h.Name,
+                    Description = h.Description,
+                    Location = h.Location,
+                    Rate = CalculateRate((List<HotelComment>)h.HotelComments),
+                    Comments = h.HotelComments
                    .Select(c => new HotelCommentDTO
                    {
                        Comments = c.Comments,
                        PublishedDate = c.PublishedDate,
                        Rating = c.Rating,
                    }).ToList()
-           }).ToList();
+                }).ToList();
+            for (int i = 0; i < hotelsDto.Count; i++)
+            {
+                var images = _imageRepository.GetAll().Where(image => image.EntityId == hotelsDto[i].Id && image.ImageEntity == ImageEntity.Hotel)
+                    .Select(h => new ImagDTO
+                    {
+                        Name = h.Name,
+                    }).ToList();
+                hotelsDto[i].Images = images;
+            }
+
+
+
             return Ok(hotelsDto);
         }
 
@@ -77,6 +91,7 @@ namespace EgyptopiaApi.Controllers
         public async Task<ActionResult<ReadHotel>> GetHotel(Guid id)
         {
             var hotel = await _hotelRepository.GetWithComments(id);
+            var images = _imageRepository.GetAll().Where(i => i.EntityId == id && i.ImageEntity == ImageEntity.Hotel).ToList();
             if (hotel == null)
             {
                 return NotFound();
@@ -94,9 +109,18 @@ namespace EgyptopiaApi.Controllers
                       Comments = c.Comments,
                       PublishedDate = c.PublishedDate,
                       Rating = c.Rating,
+                  }).ToList(),
+                Images = images
+                  .Select(h => new ImagDTO
+                  {
+                      Name = h.Name,
                   }).ToList()
             };
-            return Ok(hotelDTo);
+            return Ok(new
+            {
+                Hotel = hotelDTo,
+                Images = images,
+            });
         }
 
         [HttpPut(nameof(UpdateHotel))]

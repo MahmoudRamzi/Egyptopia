@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.DTOs.Hotel;
+using Egyptopia.Domain.DTOs.Image;
 using Egyptopia.Domain.DTOs.TourGuide;
 using Egyptopia.Domain.DTOs.TourguideComment;
 using Egyptopia.Domain.DTOs.TourguideLanuage;
 using Egyptopia.Domain.Entities;
+using Egyptopia.Domain.Enums;
 using EgyptopiaApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,15 +21,18 @@ namespace EgyptopiaApi.Controllers
     [ApiController]
     public class TourGuideController : ControllerBase
     {
+        private readonly IImageRepository _imageRepository;
         private readonly ITourGuideRepository _tourGuideRepository;
         private readonly IMapper _mapper;
 
         public TourGuideController(
             ITourGuideRepository tourGuideRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IImageRepository imageRepository)
         {
             _tourGuideRepository = tourGuideRepository;
             _mapper = mapper;
+            _imageRepository = imageRepository;
         }
 
         [HttpPost(nameof(CreateTourGuide))]
@@ -49,7 +54,7 @@ namespace EgyptopiaApi.Controllers
             return Ok(data);
         }
 
-        [Authorize]
+        
         [HttpGet(nameof(GetAllTourGuide))]
         public async Task<ActionResult<List<ReadTourGuide>>> GetAllTourGuide()
         {
@@ -93,6 +98,12 @@ namespace EgyptopiaApi.Controllers
                     }).ToList(),
                 TotalReviews = TotalReviews((List<TourGuideComment>)tourGuide.TourGuideComments)
             };
+            var images = _imageRepository.GetAll().Where(image => image.EntityId == tourGuideDTo.Id && image.ImageEntity == ImageEntity.TourGuide)
+                    .Select(h => new ImagDTO
+                    {
+                        Name = h.Name,
+                    }).ToList();
+            tourGuideDTo.Images = images;
             return Ok(tourGuideDTo);
         }
 

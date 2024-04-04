@@ -1,11 +1,13 @@
 ﻿using Egyptopia.Application.Repositories;
 using Egyptopia.Domain.DTOs.Hotel;
 using Egyptopia.Domain.DTOs.HotelComment;
+using Egyptopia.Domain.DTOs.Image;
 using Egyptopia.Domain.DTOs.Paged;
 using Egyptopia.Domain.DTOs.TourGuide;
 using Egyptopia.Domain.DTOs.TourguideComment;
 using Egyptopia.Domain.DTOs.TourguideLanuage;
 using Egyptopia.Domain.Entities;
+using Egyptopia.Domain.Enums;
 using Egyptopia.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -17,10 +19,12 @@ namespace Egyptopia.Persistence.Repositories
 {
     internal class TourGuideRepository : BaseRepository<TourGuide>, ITourGuideRepository
     {
+        private readonly IImageRepository _imageRepository;
         private readonly DataContext _dataContext;
-        public TourGuideRepository(DataContext dataContext) : base(dataContext)
+        public TourGuideRepository(DataContext dataContext, IImageRepository imageRepository) : base(dataContext)
         {
             _dataContext = dataContext;
+            _imageRepository = imageRepository;
         }
 
         public IQueryable<TourGuide> FilterByTerm(string term)
@@ -173,6 +177,15 @@ namespace Egyptopia.Persistence.Repositories
                     }).ToList(),
                TotalReviews = TotalReviews((List<TourGuideComment>)h.TourGuideComments)
            }).ToList();
+            for (int i = 0; i < tourGuidesDto.Count; i++)
+            {
+                var images = _imageRepository.GetAll().Where(image => image.EntityId == tourGuidesDto[i].Id && image.ImageEntity == ImageEntity.TourGuide)
+                    .Select(h => new ImagDTO
+                    {
+                        Name = h.Name,
+                    }).ToList();
+                tourGuidesDto[i].Images = images;
+            }
             return tourGuidesDto;
         }
     }

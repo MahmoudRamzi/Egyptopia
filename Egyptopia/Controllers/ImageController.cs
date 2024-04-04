@@ -32,14 +32,21 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpPost(nameof(CreateImage))]
-        public ActionResult<ImageModel?> CreateImage([FromForm]ImageModel model)
+        public async Task<ActionResult<ImageModel?>> CreateImage([FromForm]ImageModel model)
         {
-            var data = _imageRepository.Create(_mapper.Map<Image>(model));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var imageName = await SaveImage(model.File);
+            
+            var imageEntity = _mapper.Map<Image>(model);
+            imageEntity.Name = imageName;
+            var data = _imageRepository.Create(imageEntity);
             if (data == null)
             {
                 return BadRequest();
             }
-            SaveImage(model.File);
             return Ok(data);
         }
 
@@ -80,7 +87,7 @@ namespace EgyptopiaApi.Controllers
             return Ok();
         }
 
-        private async Task<bool> SaveImage(IFormFile file)
+        private async Task<string> SaveImage(IFormFile file)
         {
             try
             {
@@ -98,16 +105,16 @@ namespace EgyptopiaApi.Controllers
                         await file.CopyToAsync(stream);
                     }
 
-                    return true;
+                    return uniqueFileName;
                 }
                 else
                 {
-                    return false;
+                    return string.Empty;
                 }
             }
             catch (Exception ex)
             {
-                return false;
+                return string.Empty;
             }
         }
 

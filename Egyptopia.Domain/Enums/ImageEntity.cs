@@ -5,5 +5,7 @@
         Hotel,
         Place,
         Room,
+        User,
+        TourGuide
     }
 }

@@ -1,4 +1,5 @@
-﻿using Egyptopia.Domain.DTOs.TourguideComment;
+﻿using Egyptopia.Domain.DTOs.Image;
+using Egyptopia.Domain.DTOs.TourguideComment;
 using Egyptopia.Domain.DTOs.TourguideLanuage;
 using Egyptopia.Domain.Entities;
 using System;
@@ -19,6 +20,7 @@ namespace Egyptopia.Domain.DTOs.TourGuide
         public string Location { get; set; }
         public string AboutInfo { get; set; }
         public List<TourGuideCommentDTO> Comments { get; set; }
+        public List<ImagDTO> Images { get; set; }
         public List<TourGuideLanguageDTO> Languages { get; set; }
     }
 }

@@ -9,16 +9,20 @@ using System.Linq.Dynamic.Core;
 using Egyptopia.Domain.DTOs.HotelComment;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Egyptopia.Domain.DTOs.Paged;
+using Egyptopia.Domain.Enums;
+using Egyptopia.Domain.DTOs.Image;
 
 namespace Egyptopia.Persistence.Repositories
 {
     internal class HotelRepository : BaseRepository<Hotel>, IHotelRepository
     {
         private readonly DataContext _dataContext;
+        private readonly IImageRepository _imageRepository;
 
-        public HotelRepository(DataContext dataContext) : base(dataContext)
+        public HotelRepository(DataContext dataContext, IImageRepository imageRepository) : base(dataContext)
         {
             _dataContext = dataContext;
+            _imageRepository = imageRepository;
         }
 
         public IQueryable<Hotel> FilterByTerm(string term)
@@ -73,6 +77,7 @@ namespace Egyptopia.Persistence.Repositories
 
         public async Task<PagedHotelResult> Pagination(int page, int limit, IQueryable<Hotel> hotels)
         {
+            
             var totalCount = await _dataContext.Hotels.CountAsync();
             var totalPages = (int)Math.Ceiling(totalCount / (double)limit);
             var pagedHotels = await hotels.Skip((page - 1) * limit).Take(limit).ToListAsync();
@@ -92,6 +97,15 @@ namespace Egyptopia.Persistence.Repositories
                        Rating = c.Rating,
                    }).ToList()
            }).ToList();
+            for (int i = 0; i < hotelsDto.Count; i++)
+            {
+                var images = _imageRepository.GetAll().Where(image => image.EntityId == hotelsDto[i].Id && image.ImageEntity == ImageEntity.Hotel)
+                    .Select(h => new ImagDTO
+                    {
+                        Name = h.Name,
+                    }).ToList();
+                hotelsDto[i].Images = images;
+            }
             var PagedHotelData = new PagedHotelResult
             {
                 TotalPages = totalPages,
