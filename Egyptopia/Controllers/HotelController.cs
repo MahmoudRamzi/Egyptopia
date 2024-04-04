@@ -47,9 +47,9 @@ namespace EgyptopiaApi.Controllers
 
         //[Authorize]
         [HttpGet(nameof(GetAllHotel))]
-        public ActionResult<List<ReadHotel>> GetAllHotel()
+        public async Task<ActionResult<List<ReadHotel>>> GetAllHotel()
         {
-            var hotels = _hotelRepository.GetAllWithComments();
+            var hotels = await _hotelRepository.GetAllWithComments();
             if (hotels == null)
             {
                 return NotFound();
@@ -74,9 +74,9 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpGet(nameof(GetHotel))]
-        public ActionResult<ReadHotel> GetHotel(Guid id)
+        public async Task<ActionResult<ReadHotel>> GetHotel(Guid id)
         {
-            var hotel = _hotelRepository.GetWithComments(id);
+            var hotel = await _hotelRepository.GetWithComments(id);
             if (hotel == null)
             {
                 return NotFound();

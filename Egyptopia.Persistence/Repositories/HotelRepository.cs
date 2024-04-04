@@ -32,9 +32,9 @@ namespace Egyptopia.Persistence.Repositories
             return hotels;
         }
 
-        public List<Hotel> GetAllWithComments()
+        public async Task<List<Hotel>> GetAllWithComments()
         {
-            return _dataContext.Hotels.Include(h => h.HotelComments).ToList();
+            return await _dataContext.Hotels.Include(h => h.HotelComments).ToListAsync();
         }
 
         public async Task<PagedHotelResult> GetAllWithFiltertion(string? term, string? sort, int page, int limit)
@@ -66,9 +66,9 @@ namespace Egyptopia.Persistence.Repositories
             return await Pagination(page,limit,hotels);
         }
 
-        public Hotel GetWithComments(Guid id)
+        public async Task<Hotel> GetWithComments(Guid id)
         {
-            return _dataContext.Hotels.Include(h => h.HotelComments).FirstOrDefault(h => h.Id == id);
+            return await _dataContext.Hotels.Include(h => h.HotelComments).FirstOrDefaultAsync(h => h.Id == id);
         }
 
         public async Task<PagedHotelResult> Pagination(int page, int limit, IQueryable<Hotel> hotels)

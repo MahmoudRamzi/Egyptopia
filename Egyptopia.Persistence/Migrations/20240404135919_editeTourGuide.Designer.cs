@@ -4,6 +4,7 @@ using Egyptopia.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Egyptopia.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240404135919_editeTourGuide")]
+    partial class editeTourGuide
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,7 +167,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("TourGuideId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Governorate", b =>
@@ -181,7 +184,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Governorates", (string)null);
+                    b.ToTable("Governorates");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Hotel", b =>
@@ -201,7 +204,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hotels", (string)null);
+                    b.ToTable("Hotels");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.HotelComment", b =>
@@ -234,7 +237,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("HotelComment", (string)null);
+                    b.ToTable("HotelComment");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Image", b =>
@@ -257,7 +260,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Language", b =>
@@ -271,7 +274,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Language", (string)null);
+                    b.ToTable("Language");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Place", b =>
@@ -298,7 +301,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("TourGuideId");
 
-                    b.ToTable("Places", (string)null);
+                    b.ToTable("Places");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Room", b =>
@@ -335,7 +338,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.TourGuide", b =>
@@ -361,7 +364,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TourGuids", (string)null);
+                    b.ToTable("TourGuids");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.TourGuideComment", b =>
@@ -394,7 +397,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("TourGuideId");
 
-                    b.ToTable("TourGuideComments", (string)null);
+                    b.ToTable("TourGuideComments");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.TourGuideLanguage", b =>
@@ -409,7 +412,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("TourGuideLanguages", (string)null);
+                    b.ToTable("TourGuideLanguages");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.TourGuideService", b =>
@@ -424,7 +427,7 @@ namespace Egyptopia.Persistence.Migrations
 
                     b.HasIndex("PlaceId");
 
-                    b.ToTable("TourGuideServices", (string)null);
+                    b.ToTable("TourGuideServices");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

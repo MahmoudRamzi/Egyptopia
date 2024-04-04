@@ -1,11 +1,17 @@
 ﻿using AutoMapper;
 using Egyptopia.Application.Repositories;
+using Egyptopia.Domain.DTOs.Hotel;
+using Egyptopia.Domain.DTOs.TourGuide;
+using Egyptopia.Domain.DTOs.TourguideComment;
+using Egyptopia.Domain.DTOs.TourguideLanuage;
 using Egyptopia.Domain.Entities;
 using EgyptopiaApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EgyptopiaApi.Controllers
 {
@@ -25,9 +31,17 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpPost(nameof(CreateTourGuide))]
-        public ActionResult<TourGuideModel?> CreateTourGuide(TourGuideModel model)
+        public ActionResult<Hotel> CreateTourGuide(WriteTourGuide writeTourGuide)
         {
-            var data = _tourGuideRepository.Create(_mapper.Map<TourGuide>(model));
+            var tourGuide = new TourGuide
+            {
+                Name = writeTourGuide.Name,
+                Location = writeTourGuide.Location,
+                Price = writeTourGuide.Price,
+                AboutInfo = writeTourGuide.AboutInfo,
+                IdentityNumber = writeTourGuide.IdentityNumber, 
+            };
+            var data = _tourGuideRepository.Create(tourGuide);
             if (data == null)
             {
                 return BadRequest();
@@ -37,15 +51,49 @@ namespace EgyptopiaApi.Controllers
 
         [Authorize]
         [HttpGet(nameof(GetAllTourGuide))]
-        public ActionResult<List<TourGuideModel>> GetAllTourGuide()
+        public async Task<ActionResult<List<ReadTourGuide>>> GetAllTourGuide()
         {
-            return Ok(_mapper.Map<List<TourGuideModel>>(_tourGuideRepository.GetAll()));
+            var hotels = await _tourGuideRepository.GetAllWithCommentsAndLanguages();
+            if (hotels == null)
+            {
+                return NotFound();
+            }
+            var tourGuidesDto = _tourGuideRepository.Mapping(hotels);
+                
+            return Ok(tourGuidesDto);
         }
 
         [HttpGet(nameof(GetTourGuide))]
-        public ActionResult<TourGuideModel?> GetTourGuide(Guid id)
+        public async Task<ActionResult<ReadTourGuide>> GetTourGuide(Guid id)
         {
-            return Ok(_mapper.Map<TourGuideModel>(_tourGuideRepository.Get(id)));
+            var tourGuide = await _tourGuideRepository.GetWithCommentsAndLanguages(id);
+            if (tourGuide == null)
+            {
+                return NotFound();
+            }
+            var tourGuideDTo = new ReadTourGuide
+            {
+                Id = tourGuide.Id,
+                Name = tourGuide.Name,
+                Price = tourGuide.Price,
+                Location = tourGuide.Location,
+                AboutInfo = tourGuide.AboutInfo,
+                Rate = CalculateRate((List<TourGuideComment>)tourGuide.TourGuideComments),
+                Comments = tourGuide.TourGuideComments
+                   .Select(c => new TourGuideCommentDTO
+                   {
+                       Comments = c.Comments,
+                       PublishedDate = c.PublishedDate,
+                       Rating = c.Rating,
+                   }).ToList(),
+                Languages = tourGuide.TourGuideLanguages
+                    .Select(l => new TourGuideLanguageDTO
+                    {
+                        LanguageName = l.Language.Name
+                    }).ToList(),
+                TotalReviews = TotalReviews((List<TourGuideComment>)tourGuide.TourGuideComments)
+            };
+            return Ok(tourGuideDTo);
         }
 
         [HttpPut(nameof(UpdateTourGuide))]
@@ -68,6 +116,40 @@ namespace EgyptopiaApi.Controllers
 
             _tourGuideRepository.Delete(entity);
             return Ok();
+        }
+
+        [HttpGet(nameof(GetAllWithFiltertion))]
+        public async Task<ActionResult<List<ReadTourGuide>>> GetAllWithFiltertion(string? term, string? sort, int page = 1, int limit = 5)
+        {
+            var tourGuideResult = await _tourGuideRepository.GetAllWithFiltertion(term, sort, page, limit);
+            //add pagination header to the response
+            Response.Headers.Add("TourGuides-Total-Count", tourGuideResult.TotalCount.ToString());
+            Response.Headers.Add("TourGuides-Total-Pages", tourGuideResult.TotalPages.ToString());
+            return Ok(tourGuideResult.tourGuides);
+
+        }
+
+        public static int CalculateRate(List<TourGuideComment> comments)
+        {
+            if (comments.Count > 0)
+            {
+                return (comments.Sum(s => s.Rating) / comments.Count);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        public static string TotalReviews(List<TourGuideComment> comments)
+        {
+            if (comments.Count > 0)
+            {
+                return $"{comments.Count} Reviews";
+            }
+            else
+            {
+                return "Be the first to comment.";
+            }
         }
     }
 }

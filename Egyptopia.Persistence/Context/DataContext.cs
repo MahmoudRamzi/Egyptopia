@@ -18,6 +18,8 @@ namespace Egyptopia.Persistence.Context
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<TourGuide> TourGuids { get; set; }
         public DbSet<TourGuideService> TourGuideServices { get; set; }
+        public DbSet<TourGuideComment> TourGuideComments { get; set; }
+        public DbSet<TourGuideLanguage> TourGuideLanguages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,6 +75,33 @@ namespace Egyptopia.Persistence.Context
                 .HasOne(b => b.Hotel)
                 .WithMany(b => b.HotelComments)
                 .HasForeignKey(b => b.HotelId);
+
+            modelBuilder.Entity<TourGuideLanguage>()
+                .HasOne(b => b.TourGuide)
+                .WithMany(b => b.TourGuideLanguages)
+                .HasForeignKey(b => b.TourGuideId);
+
+            modelBuilder.Entity<TourGuideLanguage>()
+                .HasOne(b => b.Language)
+                .WithMany(b => b.TourGuideLanguages)
+                .HasForeignKey(b => b.LanguageId);
+
+            modelBuilder.Entity<TourGuideLanguage>()
+                .HasKey(e => new
+                {
+                    e.TourGuideId,
+                    e.LanguageId
+                });
+
+            modelBuilder.Entity<TourGuideComment>()
+                .HasOne(b => b.ApplicationUser)
+                .WithMany(b => b.TourGuideComments)
+                .HasForeignKey(b => b.ApplicationUserId);
+
+            modelBuilder.Entity<TourGuideComment>()
+                .HasOne(b => b.TourGuide)
+                .WithMany(b => b.TourGuideComments)
+                .HasForeignKey(b => b.TourGuideId);
 
         }
     }

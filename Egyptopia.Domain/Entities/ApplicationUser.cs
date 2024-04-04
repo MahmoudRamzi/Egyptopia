@@ -9,6 +9,6 @@ namespace Egyptopia.Domain.Entities
         public string Country { get; set; }
         public DateOnly DOB {  get; set; }
         public ICollection<HotelComment> HotelComments { get; set; }
-        
+        public ICollection<TourGuideComment> TourGuideComments { get; set;}
     }
 }
