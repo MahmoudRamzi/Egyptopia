@@ -1,4 +1,5 @@
 ﻿using Egyptopia.Domain.Common;
+using Egyptopia.Domain.Enums;
 
 namespace Egyptopia.Domain.Entities
 {
@@ -6,10 +7,11 @@ namespace Egyptopia.Domain.Entities
     {
         //public Guid Id { get; set; }= Guid.NewGuid();
         //public string? Name { get; set; }
-        public string Description { get; set; }
-
+        public string? Description { get; set; }
+        public string? Location { get; set; }
+        
         public Guid GovernorateId { get; set; }
-
-        public virtual Governorate Governorate { get; set; }
+        public PlaceType PlaceType { get; set; }
+        public virtual Governorate? Governorate { get; set; }
     }
 }

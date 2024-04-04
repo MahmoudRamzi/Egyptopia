@@ -56,12 +56,12 @@ namespace Egyptopia.Persistence.Context
                     e.TourGuideId,
                     e.PlaceId
                 });
-            modelBuilder.Entity<Booking>()
+            modelBuilder.Entity<BookingTourGuide>()
                 .HasOne(b => b.TourGuide)
                 .WithMany()
                 .HasForeignKey(b => b.TourGuideId);
 
-            modelBuilder.Entity<Booking>()
+            modelBuilder.Entity<BookingRoom>()
                 .HasOne(b => b.Room)
                 .WithMany()
                 .HasForeignKey(b => b.RoomId);

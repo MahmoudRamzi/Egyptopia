@@ -2,6 +2,7 @@
 using Egyptopia.Domain.DTOs.Hotel;
 using Egyptopia.Domain.Entities;
 using EgyptopiaApi.Models;
+using EgyptopiaApi.Models.Place;
 
 namespace EgyptopiaApi
 {
@@ -14,7 +15,20 @@ CreateMap<TourGuide, TourGuideModel>();
 CreateMap<TourGuideModel, TourGuide>();
 CreateMap<Room, RoomModel>();
 CreateMap<RoomModel, Room>();
-
+            CreateMap<Hotel, HotelModel>();
+            CreateMap<HotelModel, Hotel>();
+            CreateMap<PlaceInputModel, Place>();
+            CreateMap<Place, PlaceInputModel>();
+            CreateMap<PlaceResponseModel, Place>();
+            CreateMap<Place, PlaceResponseModel>();
+            CreateMap<BookingRoom, BookingRoomModelInput>();
+            CreateMap<BookingRoomModelInput, BookingRoom>();
+            CreateMap<BookingRoom, BookingRoomModelResponse>();
+            CreateMap<BookingRoomModelResponse, BookingRoom>();
+            CreateMap<BookingTourGuideResponse, BookingTourGuide>();
+            CreateMap<BookingTourGuide, BookingTourGuideResponse>();
+            CreateMap<BookingTourGuideInput, BookingTourGuide>();
+            CreateMap<BookingTourGuide, BookingTourGuideInput>();
 
             CreateMap<Image, ImageModel>();
             CreateMap<ImageModel, Image>()

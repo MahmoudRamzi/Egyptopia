@@ -35,6 +35,7 @@ namespace EgyptopiaApi.Controllers
         {
             var hotel = new Hotel
             {
+                Id=Guid.NewGuid(),
                 Name = writeHotel.Name,
                 Location = writeHotel.Location,
                 Description = writeHotel.Description,
