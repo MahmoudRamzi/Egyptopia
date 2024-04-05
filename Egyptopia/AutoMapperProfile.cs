@@ -21,14 +21,14 @@ CreateMap<RoomModel, Room>();
             CreateMap<Place, PlaceInputModel>();
             CreateMap<PlaceResponseModel, Place>();
             CreateMap<Place, PlaceResponseModel>();
-            CreateMap<BookingRoom, BookingRoomModelInput>();
-            CreateMap<BookingRoomModelInput, BookingRoom>();
-            CreateMap<BookingRoom, BookingRoomModelResponse>();
-            CreateMap<BookingRoomModelResponse, BookingRoom>();
-            CreateMap<BookingTourGuideResponse, BookingTourGuide>();
-            CreateMap<BookingTourGuide, BookingTourGuideResponse>();
-            CreateMap<BookingTourGuideInput, BookingTourGuide>();
-            CreateMap<BookingTourGuide, BookingTourGuideInput>();
+            //CreateMap<BookingRoom, BookingRoomInputModel>();
+            //CreateMap<BookingRoomInputModel, BookingRoom>();
+            //CreateMap<BookingRoom, BookingRoomResponseModel>();
+            //CreateMap<BookingRoomResponseModel, BookingRoom>();
+            //CreateMap<BookingTourGuideResponse, BookingTourGuide>();
+            //CreateMap<BookingTourGuide, BookingTourGuideResponse>();
+            //CreateMap<BookingTourGuideInput, BookingTourGuide>();
+            //CreateMap<BookingTourGuide, BookingTourGuideInput>();
 
             CreateMap<Image, ImageModel>();
             CreateMap<ImageModel, Image>()

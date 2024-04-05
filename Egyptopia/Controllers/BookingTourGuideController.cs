@@ -29,36 +29,27 @@
 //            _bookingRoomRepository = bookingRoomRepository;
 //            _mapper = mapper;
 
-//            _roomRepository = roomRepository;
+//            _roomRepository == roomRepository;
 
 //        }
 
-//        [HttpPost(nameof(CreateBooking))]
-//        public ActionResult<BookingModel?> CreateBooking(BookingModel model)
-//        {
-//            var data = _bookingRoomRepository.Create(_mapper.Map<Booking>(model));
-//            if (data == null)
-//            {
-//                return BadRequest();
-//            }
-//            return Ok(data);
-//        }
+
 
 //        [Authorize]
-//        [HttpGet(nameof(GetAllBooking))]
-//        public ActionResult<List<BookingModel>> GetAllBooking()
+//        [HttpGet(nameof(GetAllRoomBooking))]
+//        public ActionResult<List<BookingRoom>> GetAllRoomBooking()
 //        {
-//            return Ok(_mapper.Map<List<BookingModel>>(_bookingRoomRepository.GetAll()));
+//            return Ok(_mapper.Map<List<BookingRoom>>(_bookingRoomRepository.GetAll()));
 //        }
 
-//        [HttpGet(nameof(GetBooking))]
-//        public ActionResult<BookingModel?> GetBooking(Guid id)
+//        [HttpGet(nameof(GetRoomBooking))]
+//        public ActionResult<BookingRoomResponseModel?> GetRoomBooking(Guid id)
 //        {
-//            return Ok(_mapper.Map<BookingModel>(_bookingRoomRepository.Get(id)));
+//            return Ok(_mapper.Map<BookingRoom>(_bookingRoomRepository.Get(id)));
 //        }
 
-//        [HttpPut(nameof(UpdateBooking))]
-//        public ActionResult<BookingModel?> UpdateBooking(BookingModel model)
+//        [HttpPut(nameof(UpdateRoomBooking))]
+//        public ActionResult<BookingRoomInputModel?> UpdateRoomBooking(BookingRoomResponseModel model)
 //        {
 //            if (model == null)
 //                return BadRequest();
@@ -68,8 +59,8 @@
 //            return Ok(_bookingRoomRepository.Update(_mapper.Map(model, entity)));
 //        }
 
-//        [HttpDelete(nameof(DeleteBooking))]
-//        public ActionResult DeleteBooking(Guid id)
+//        [HttpDelete(nameof(DeleteRoomBooking))]
+//        public ActionResult DeleteRoomBooking(Guid id)
 //        {
 //            var entity = _bookingRoomRepository.Get(id);
 //            if (entity == null)
@@ -84,7 +75,7 @@
 //            return Ok(await _bookingRoomRepository.GetRemainingRooms(hotelId, roomType, checkInDate, checkOutDate));
 //        }
 //        [HttpPost(nameof(CreateRoomBooking))]
-//        public async Task<ActionResult<BookingModel?>> CreateRoomBooking(BookingModel model)
+//        public async Task<ActionResult<BookingRoom?>> CreateRoomBooking(BookingRoomResponseModel model)
 //        {
 //            var room = _roomRepository.Get(model.RoomId.GetValueOrDefault());
 //            var roomNumber = await _bookingRoomRepository.GetRemainingRooms(room.HotelId, room.RoomType, model.CheckInDate, model.CheckOutDate);
@@ -93,7 +84,7 @@
 //                return BadRequest("no empty room");
 //            }
 //            model.RoomNumber = roomNumber.FirstOrDefault();
-//            var data = _bookingRoomRepository.Create(_mapper.Map<Booking>(model));
+//            var data = _bookingRoomRepository.Create(_mapper.Map<BookingRoom>(model));
 
 //            if (data == null)
 //            {

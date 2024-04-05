@@ -15,7 +15,8 @@ namespace Egyptopia.Persistence.Context
         public DbSet<Image> Images { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<Booking> Bookings { get; set; }
+        //public DbSet<BookingRoom> BookingRooms { get; set; }
+        //public DbSet<BookingTourGuide> BookingTourGuides { get; set; }
         public DbSet<TourGuide> TourGuids { get; set; }
         public DbSet<TourGuideService> TourGuideServices { get; set; }
         public DbSet<TourGuideComment> TourGuideComments { get; set; }
@@ -56,15 +57,15 @@ namespace Egyptopia.Persistence.Context
                     e.TourGuideId,
                     e.PlaceId
                 });
-            modelBuilder.Entity<BookingTourGuide>()
-                .HasOne(b => b.TourGuide)
-                .WithMany()
-                .HasForeignKey(b => b.TourGuideId);
+            //modelBuilder.Entity<BookingTourGuide>()
+            //    .HasOne(b => b.TourGuide)
+            //    .WithMany()
+            //    .HasForeignKey(b => b.TourGuideId);
 
-            modelBuilder.Entity<BookingRoom>()
-                .HasOne(b => b.Room)
-                .WithMany()
-                .HasForeignKey(b => b.RoomId);
+            //modelBuilder.Entity<BookingRoom>()
+            //    .HasOne(b => b.Room)
+            //    .WithMany()
+            //    .HasForeignKey(b => b.RoomId);
 
             modelBuilder.Entity<HotelComment>()
                 .HasOne(b => b.ApplicationUser)

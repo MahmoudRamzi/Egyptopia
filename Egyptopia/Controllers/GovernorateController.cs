@@ -41,7 +41,7 @@ namespace EgyptopiaApi.Controllers
             return Ok(data);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet(nameof(GetAllGovernorate))]
         public ActionResult<List<GovernorateModel>> GetAllGovernorate()
         {
