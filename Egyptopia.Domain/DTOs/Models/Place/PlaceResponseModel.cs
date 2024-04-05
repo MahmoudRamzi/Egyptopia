@@ -12,6 +12,8 @@ namespace EgyptopiaApi.Models.Place
 
         public Guid GovernorateId { get; set; }
         public PlaceType PlaceType { get; set; }
+        public List<ImagDTO> Images { get; set; }
+        public string Name { get; set; }
         
     }
 }

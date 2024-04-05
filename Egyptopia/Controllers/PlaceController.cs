@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using Egyptopia.Application.Repositories;
+using Egyptopia.Domain.DTOs.Image;
+using Egyptopia.Domain.DTOs.Place;
+using Egyptopia.Domain.DTOs.TourGuide;
+using Egyptopia.Domain.DTOs.TourguideComment;
+using Egyptopia.Domain.DTOs.TourguideLanuage;
 using Egyptopia.Domain.Entities;
 using Egyptopia.Domain.Enums;
-using EgyptopiaApi.Models.Place;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,25 +22,36 @@ namespace EgyptopiaApi.Controllers
 
     public class PlaceController : ControllerBase
     {
+        private readonly IImageRepository _imageRepository;
         private readonly IPlaceRepository _placeRepository;
         private readonly IMapper _mapper;
 
         public PlaceController(
             IPlaceRepository placeRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IImageRepository imageRepository)
         {
             _placeRepository = placeRepository;
             _mapper = mapper;
+            _imageRepository = imageRepository;
         }
 
         [HttpPost(nameof(CreatePlace))]
-        public ActionResult<PlaceResponseModel?> CreatePlace(PlaceResponseModel model)
+        public ActionResult<PlaceInputModel> CreatePlace(PlaceInputModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var data = _placeRepository.Create(_mapper.Map<Place>(model));
+            var place = new Place
+            {
+                Description = model.Description,
+                Location = model.Location,
+                Name = model.Name,
+                GovernorateId = model.GovernorateId,
+                PlaceType = model.PlaceType,
+            };
+            var data = _placeRepository.Create(place);
             if (data == null)
             {
                 return BadRequest();
@@ -46,19 +61,46 @@ namespace EgyptopiaApi.Controllers
 
         [Authorize]
         [HttpGet(nameof(GetAllPlace))]
-        public ActionResult<List<PlaceInputModel>> GetAllPlace()
+        public ActionResult<List<PlaceResponseModel>> GetAllPlace()
         {
-            return Ok(_mapper.Map<List<PlaceInputModel>>(_placeRepository.GetAll()));
+            var places =  _placeRepository.GetAllWithGovernorate();
+            if (places == null)
+            {
+                return NotFound();
+            }
+            var placesDto = _placeRepository.Mapping(places);
+
+            return Ok(placesDto);
         }
 
         [HttpGet(nameof(GetPlace))]
-        public ActionResult<PlaceInputModel?> GetPlace(Guid id)
+        public ActionResult<PlaceResponseModel> GetPlace(Guid id)
         {
-            return Ok(_mapper.Map<PlaceInputModel>(_placeRepository.Get(id)));
+            var place = _placeRepository.Get(id);
+            if (place == null)
+            {
+                return NotFound();
+            }
+            var placeDTo = new PlaceResponseModel
+            {
+                Id = place.Id,
+                Name = place.Name,
+                Location = place.Location,
+                Description = place.Description,
+                GovernorateId = place.GovernorateId,
+                GovernorateName = place.Governorate.Name
+            };
+            var images = _imageRepository.GetAll().Where(image => image.EntityId == placeDTo.Id && image.ImageEntity == ImageEntity.Place)
+                    .Select(h => new ImagDTO
+                    {
+                        Name = h.Name,
+                    }).ToList();
+            placeDTo.Images = images;
+            return Ok(placeDTo);
         }
 
         [HttpPut(nameof(UpdatePlace))]
-        public ActionResult<PlaceResponseModel> UpdatePlace(PlaceInputModel model)
+        public ActionResult<PlaceInputModel> UpdatePlace(PlaceResponseModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -87,10 +129,16 @@ namespace EgyptopiaApi.Controllers
             return Ok();
         }
         [HttpGet("GetPlacesByType")]
-        public async Task<ActionResult<IEnumerable<PlaceInputModel>>> GetPlacesByType(PlaceType type)
+        public async Task<ActionResult<List<PlaceResponseModel>>> GetPlacesByType(PlaceType type)
         {
             var places = await _placeRepository.GetAllPlacesDetailsByType(type);
-            return Ok(_mapper.Map<IEnumerable<PlaceInputModel>>(places));
+            if (places == null)
+            {
+                return NotFound();
+            }
+            var placesDto = _placeRepository.Mapping(places);
+
+            return Ok(placesDto);
         }
 
     }
