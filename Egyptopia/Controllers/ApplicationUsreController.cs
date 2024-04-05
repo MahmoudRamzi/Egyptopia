@@ -1,6 +1,9 @@
-﻿using Egyptopia.Domain.DTOs.Authentication;
+﻿using Egyptopia.Application.Repositories;
+using Egyptopia.Domain.DTOs.Authentication;
+using Egyptopia.Domain.DTOs.Image;
 using Egyptopia.Domain.DTOs.Token;
 using Egyptopia.Domain.Entities;
+using Egyptopia.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -23,13 +26,15 @@ namespace EgyptopiaApi.Controllers
     [ApiController]
     public class ApplicationUsreController : ControllerBase
     {
+        private readonly IImageRepository _imageRepository;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ApplicationUsreController(IConfiguration configuration, UserManager<ApplicationUser> userManager) 
+        public ApplicationUsreController(IConfiguration configuration, UserManager<ApplicationUser> userManager,IImageRepository imageRepository) 
         {
             _configuration = configuration;
             _userManager = userManager;
+            _imageRepository = imageRepository;
         }
         [HttpPost]
         [Route("StaticLogin")]
@@ -133,6 +138,12 @@ namespace EgyptopiaApi.Controllers
             int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
             int dob = int.Parse(registerDTO.DOB.ToString("yyyyMMdd"));
             int age = (now - dob) / 10000;
+            var images = _imageRepository.GetAll().Where(image => image.EntityId == NewUser.Id && image.ImageEntity == ImageEntity.User)
+                    .Select(h => new ImagDTO
+                    {
+                        Name = h.Name,
+                    }).ToList();
+            var imageName = images.Count > 0 ? images[0].Name : string.Empty;
             var UserClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, NewUser.Email),
@@ -140,7 +151,9 @@ namespace EgyptopiaApi.Controllers
                     new Claim(ClaimTypes.MobilePhone, registerDTO.PhoneNumber),
                     new Claim("Country",registerDTO.Country),
                     new Claim(ClaimTypes.Role, registerDTO.Role),
-                    new Claim("age",$"{age}")
+                    new Claim("age",$"{age}"),
+                    new Claim("Id",$"{NewUser.Id}"),
+                    new Claim("ImageName",imageName)
                 };
             await _userManager.AddClaimsAsync(NewUser, UserClaims);
 
