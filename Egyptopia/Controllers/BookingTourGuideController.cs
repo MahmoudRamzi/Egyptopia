@@ -105,8 +105,22 @@ namespace EgyptopiaApi.Controllers
             _bookingTourGuidRepository.Delete(entity);
             return Ok();
         }
-        
-       
+        [HttpGet("GetBookingsForTourGuide/{tourGuideId}")]
+        public async Task<ActionResult<IEnumerable<BookingTourGuideResponseModel>>> GetBookingsForTourGuide(Guid tourGuideId)
+        {
+            // Retrieve all bookings for the specified tour guide
+            var bookings = await _bookingTourGuidRepository.GetBookingsByTourGuideId(tourGuideId);
+            if (bookings == null || !bookings.Any())
+            {
+                return NotFound("No bookings found for this tour guide.");
+            }
+
+            // Map the bookings to the response model
+            var responseModels = _mapper.Map<IEnumerable<BookingTourGuideResponseModel>>(bookings);
+
+            return Ok(responseModels);
+        }
+
 
     }
 }

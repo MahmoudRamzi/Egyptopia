@@ -20,5 +20,11 @@ namespace Egyptopia.Persistence.Repositories
             return await _context.BookingTourGuides
                 .FirstOrDefaultAsync(b => b.CheckInDate.Date == checkInDate.Date && b.TourGuideId == tourGuideId);
         }
+        public async Task<IEnumerable<BookingTourGuide>> GetBookingsByTourGuideId(Guid tourGuideId)
+        {
+            return await _context.BookingTourGuides
+                                 .Where(b => b.TourGuideId == tourGuideId)
+                                 .ToListAsync();
+        }
     }
 }
