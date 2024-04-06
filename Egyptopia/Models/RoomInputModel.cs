@@ -1,11 +1,10 @@
-﻿using Egyptopia.Domain.Entities;
-using System;
+﻿using System;
 
 namespace EgyptopiaApi.Models
 {
-    public class RoomModel
+    public class RoomInputModel
     {
-        public Guid Id { get; set; }
+        //public Guid Id { get; set; }
         public string? RoomType { get; set; }
 
         public string? Description { get; set; }
@@ -15,6 +14,5 @@ namespace EgyptopiaApi.Models
         public double Price { get; set; }
         public Guid? HotelId { get; set; }
 
-     
     }
 }

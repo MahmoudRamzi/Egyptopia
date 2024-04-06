@@ -16,6 +16,7 @@ namespace Egyptopia.Persistence
             services.AddScoped<IGovernorateRepository, GovernorateRepository>();
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IFacilityRepository, FacilityRepository>();
             services.AddScoped<IPlaceRepository, PlaceRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IBookingRoomRepository, BookingRoomRepository>();

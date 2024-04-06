@@ -15,8 +15,13 @@ CreateMap<TourGuideRead, TourGuide>();
 CreateMap<TourGuideRead, TourGuide>();
             CreateMap<TourGuideModell, TourGuide>();
             CreateMap<TourGuide, TourGuideModell>();
-            CreateMap<Room, RoomModel>();
-CreateMap<RoomModel, Room>();
+            CreateMap<FacilityModel, Facility>();
+            CreateMap<Facility, FacilityModel>();
+        
+            CreateMap<Room, RoomInputModel>();
+            CreateMap<RoomInputModel, Room>();
+            CreateMap<Room, RoomResponseModel>();
+            CreateMap<RoomResponseModel, Room>();
             CreateMap<Hotel, HotelModel>();
             CreateMap<HotelModel, Hotel>();
             CreateMap<PlaceInputModel, Place>();

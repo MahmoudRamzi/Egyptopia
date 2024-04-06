@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Egyptopia.Domain.DTOs.Hotel;
+using System;
 
 namespace EgyptopiaApi.Models
 {
-    public class RoomInputModek
+    public class RoomResponseModel
     {
-        //public Guid Id { get; set; }
+        public Guid Id { get; set; }
         public string? RoomType { get; set; }
 
         public string? Description { get; set; }
@@ -12,7 +13,6 @@ namespace EgyptopiaApi.Models
         public int NumberTo { get; set; }
         public int RoomCount { get; set; }
         public double Price { get; set; }
-        public Guid? HotelId { get; set; }
-
+        public ReadHotel Hotel { get; set; }
     }
 }

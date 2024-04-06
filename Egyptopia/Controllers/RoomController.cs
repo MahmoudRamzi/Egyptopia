@@ -12,8 +12,6 @@ namespace EgyptopiaApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[ApiExplorerSettings(GroupName ="Room")]
-
     public class RoomController : ControllerBase
     {
         private readonly IRoomRepository _roomRepository;
@@ -23,69 +21,101 @@ namespace EgyptopiaApi.Controllers
             IRoomRepository roomRepository,
             IMapper mapper)
         {
-            _roomRepository = roomRepository;
-            _mapper = mapper;
+            _roomRepository = roomRepository ?? throw new ArgumentNullException(nameof(roomRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpPost(nameof(CreateRoom))]
-        public ActionResult<RoomModel?> CreateRoom(RoomModel model)
+        public ActionResult<RoomResponseModel> CreateRoom(RoomInputModel model)
         {
+            if (model == null)
+            {
+                return BadRequest("Model is null");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var data = _roomRepository.Create(_mapper.Map<Room>(model));
-            if (data == null)
-            {
-                return BadRequest();
-            }
-            return Ok(data);
+
+            var roomEntity = _mapper.Map<Room>(model);
+            var createdRoom = _roomRepository.Create(roomEntity);
+
+            var responseModel = _mapper.Map<RoomResponseModel>(createdRoom);
+
+            return CreatedAtAction(nameof(GetRoom), new { id = responseModel.Id }, responseModel);
         }
 
-        //[Authorize]
         [HttpGet(nameof(GetAllRoom))]
-        public ActionResult<List<RoomModel>> GetAllRoom()
+        public ActionResult<List<RoomResponseModel>> GetAllRoom()
         {
-            return Ok(_mapper.Map<List<RoomModel>>(_roomRepository.GetAll()));
+            var rooms = _roomRepository.GetAll();
+            var responseModels = _mapper.Map<List<RoomResponseModel>>(rooms);
+            return Ok(responseModels);
         }
 
         [HttpGet(nameof(GetRoom))]
-        public ActionResult<RoomModel?> GetRoom(Guid id)
+        public ActionResult<RoomResponseModel> GetRoom(Guid id)
         {
-            return Ok(_mapper.Map<RoomModel>(_roomRepository.Get(id)));
+            var room = _roomRepository.Get(id);
+            if (room == null)
+                return NotFound();
+
+            var responseModel = _mapper.Map<RoomResponseModel>(room);
+            return Ok(responseModel);
         }
 
         [HttpPut(nameof(UpdateRoom))]
-        public ActionResult<RoomModel?> UpdateRoom(RoomModel model)
+        public ActionResult<RoomResponseModel> UpdateRoom(Guid id, RoomInputModel model)
         {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Id can't be empty");
+            }
+
+            if (model == null)
+            {
+                return BadRequest("Model is null");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (model == null)
-                return BadRequest();
-            var entity = _roomRepository.Get(model.Id);
-            if (entity == null)
+
+            var existingRoom = _roomRepository.Get(id);
+            if (existingRoom == null)
                 return NotFound();
-            return Ok(_roomRepository.Update(_mapper.Map(model, entity)));
+
+            // Update the existing room entity with data from the input model
+            _mapper.Map(model, existingRoom);
+
+            var updatedRoom = _roomRepository.Update(existingRoom);
+
+            var responseModel = _mapper.Map<RoomResponseModel>(updatedRoom);
+
+            return Ok(responseModel);
         }
+
 
         [HttpDelete(nameof(DeleteRoom))]
         public ActionResult DeleteRoom(Guid id)
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Id cant be empty");
+                return BadRequest("Id can't be empty");
             }
-            var entity = _roomRepository.Get(id);
-            if (entity == null)
+
+            var existingRoom = _roomRepository.Get(id);
+            if (existingRoom == null)
                 return NotFound();
 
-            _roomRepository.Delete(entity);
-            return Ok();
+            _roomRepository.Delete(existingRoom);
+            return NoContent();
         }
+
         [HttpGet("GetRoomsByHotel/{hotelId}")]
-        public ActionResult<List<RoomModel>> GetRoomsByHotel(Guid hotelId)
+        public ActionResult<List<RoomResponseModel>> GetRoomsByHotel(Guid hotelId)
         {
             if (hotelId == Guid.Empty)
             {
@@ -101,8 +131,8 @@ namespace EgyptopiaApi.Controllers
                 return NotFound("No rooms found for the given hotel ID.");
             }
 
-            return Ok(_mapper.Map<List<RoomModel>>(rooms));
+            var responseModels = _mapper.Map<List<RoomResponseModel>>(rooms);
+            return Ok(responseModels);
         }
-
     }
 }

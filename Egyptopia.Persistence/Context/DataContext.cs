@@ -15,6 +15,7 @@ namespace Egyptopia.Persistence.Context
         public DbSet<Image> Images { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Facility> Facilities { get; set; }
         public DbSet<BookingRoom> BookingRooms { get; set; }
         public DbSet<BookingTourGuide> BookingTourGuides { get; set; }
         public DbSet<TourGuide> TourGuids { get; set; }
@@ -34,6 +35,10 @@ namespace Egyptopia.Persistence.Context
             modelBuilder.Entity<Room>()
                 .HasOne(e => e.Hotel)
                 .WithMany(e => e.Rooms)
+                .HasForeignKey(e => e.HotelId);
+            modelBuilder.Entity<Facility>()
+                .HasOne(e => e.Hotel)
+                .WithMany(e => e.Facilities)
                 .HasForeignKey(e => e.HotelId);
 
             //modelBuilder.Entity<Hotel>()
