@@ -35,7 +35,7 @@ namespace EgyptopiaApi.Controllers
 
         
 
-        [Authorize]
+        //[Authorize]
         [HttpGet(nameof(GetAllBooking))]
         public ActionResult<List<BookingRoomResponseModel>> GetAllBooking()
         {
