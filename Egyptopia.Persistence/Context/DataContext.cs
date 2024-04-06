@@ -21,6 +21,7 @@ namespace Egyptopia.Persistence.Context
         public DbSet<TourGuideService> TourGuideServices { get; set; }
         public DbSet<TourGuideComment> TourGuideComments { get; set; }
         public DbSet<TourGuideLanguage> TourGuideLanguages { get; set; }
+        public DbSet<UserExprience> UserExpriences { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -104,6 +105,10 @@ namespace Egyptopia.Persistence.Context
                 .WithMany(b => b.TourGuideComments)
                 .HasForeignKey(b => b.TourGuideId);
 
+            modelBuilder.Entity<UserExprience>()
+                .HasOne(e => e.ApplicationUser)
+                .WithMany(e => e.UserExpriences)
+                .HasForeignKey(e => e.ApplicationUserId);
         }
     }
 }

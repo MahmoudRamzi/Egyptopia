@@ -24,6 +24,7 @@ namespace Egyptopia.Persistence
             services.AddScoped<ITourGuideServiceRepository, TourGuideServiceRepository>();
             services.AddScoped<IHotelCommentRepository, HotelCommentRepository>();
             services.AddScoped<ITourGuideCommentRepository, TourGuideCommentRepository>();
+            services.AddScoped<IUserExperienceRepository, UserExperienceRepository>();
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Egyptopia.Domain.Entities
         public DateOnly DOB {  get; set; }
         public ICollection<HotelComment> HotelComments { get; set; }
         public ICollection<TourGuideComment> TourGuideComments { get; set;}
+        public ICollection<UserExprience> UserExpriences { get; set;}
     }
 }

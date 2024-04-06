@@ -128,6 +128,8 @@ namespace EgyptopiaApi.Controllers
                 Country = registerDTO.Country,
                 DOB = registerDTO.DOB,
                 PhoneNumber = registerDTO.PhoneNumber,
+                FirstName = registerDTO.FirstName,
+                LastName = registerDTO.LastName,
                 
             };
             var CreationResult = await _userManager.CreateAsync(NewUser,registerDTO.Password);
@@ -146,11 +148,11 @@ namespace EgyptopiaApi.Controllers
             var imageName = images.Count > 0 ? images[0].Name : string.Empty;
             var UserClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Email, NewUser.Email),
-                    new Claim(ClaimTypes.NameIdentifier ,$"{registerDTO.FirstName} {registerDTO.LastName}"),
-                    new Claim(ClaimTypes.MobilePhone, registerDTO.PhoneNumber),
+                    new Claim("Email", NewUser.Email),
+                    new Claim("User Name" ,$"{registerDTO.FirstName} {registerDTO.LastName}"),
+                    new Claim("MobilePhone", registerDTO.PhoneNumber),
                     new Claim("Country",registerDTO.Country),
-                    new Claim(ClaimTypes.Role, registerDTO.Role),
+                    new Claim("Role", registerDTO.Role),
                     new Claim("age",$"{age}"),
                     new Claim("Id",$"{NewUser.Id}"),
                     new Claim("ImageName",imageName)
