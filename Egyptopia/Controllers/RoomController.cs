@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EgyptopiaApi.Controllers
 {
@@ -83,5 +84,25 @@ namespace EgyptopiaApi.Controllers
             _roomRepository.Delete(entity);
             return Ok();
         }
+        [HttpGet("GetRoomsByHotel/{hotelId}")]
+        public ActionResult<List<RoomModel>> GetRoomsByHotel(Guid hotelId)
+        {
+            if (hotelId == Guid.Empty)
+            {
+                return BadRequest("Hotel ID cannot be empty.");
+            }
+
+            var rooms = _roomRepository.GetAll()
+                .Where(room => room.HotelId == hotelId)
+                .ToList();
+
+            if (rooms == null || !rooms.Any())
+            {
+                return NotFound("No rooms found for the given hotel ID.");
+            }
+
+            return Ok(_mapper.Map<List<RoomModel>>(rooms));
+        }
+
     }
 }
