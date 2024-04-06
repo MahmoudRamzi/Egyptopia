@@ -43,7 +43,7 @@ namespace EgyptopiaApi.Controllers
         }
 
         [HttpGet(nameof(GetBooking))]
-        public ActionResult<BookingTourGuideResponseModel?> GetBooking(Guid id)
+        public ActionResult<BookingRoomResponseModel?> GetBooking(Guid id)
         {
             return Ok(_mapper.Map<BookingRoom>(_bookingRoomRepository.Get(id)));
         }
