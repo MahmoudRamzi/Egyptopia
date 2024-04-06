@@ -6,6 +6,7 @@
         Place,
         Room,
         User,
-        TourGuide
+        TourGuide,
+        UserEperience
     }
 }

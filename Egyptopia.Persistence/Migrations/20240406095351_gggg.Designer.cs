@@ -4,6 +4,7 @@ using Egyptopia.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Egyptopia.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240406095351_gggg")]
+    partial class gggg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,84 +129,6 @@ namespace Egyptopia.Persistence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Egyptopia.Domain.Entities.BookingRoom", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CheckInDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CheckOutDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("BookingRooms");
-                });
-
-            modelBuilder.Entity("Egyptopia.Domain.Entities.BookingTourGuide", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CheckInDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumberOfGuests")
-                        .HasColumnType("int");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
-
-                    b.Property<Guid?>("TourGuideId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourGuideId");
-
-                    b.ToTable("BookingTourGuides");
-                });
-
-            modelBuilder.Entity("Egyptopia.Domain.Entities.Facility", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("HotelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HotelId");
-
-                    b.ToTable("Facilities");
                 });
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Governorate", b =>
@@ -597,35 +522,6 @@ namespace Egyptopia.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Egyptopia.Domain.Entities.BookingRoom", b =>
-                {
-                    b.HasOne("Egyptopia.Domain.Entities.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("Egyptopia.Domain.Entities.BookingTourGuide", b =>
-                {
-                    b.HasOne("Egyptopia.Domain.Entities.TourGuide", "TourGuide")
-                        .WithMany()
-                        .HasForeignKey("TourGuideId");
-
-                    b.Navigation("TourGuide");
-                });
-
-            modelBuilder.Entity("Egyptopia.Domain.Entities.Facility", b =>
-                {
-                    b.HasOne("Egyptopia.Domain.Entities.Hotel", "Hotel")
-                        .WithMany("Facilities")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hotel");
-                });
-
             modelBuilder.Entity("Egyptopia.Domain.Entities.HotelComment", b =>
                 {
                     b.HasOne("Egyptopia.Domain.Entities.ApplicationUser", "ApplicationUser")
@@ -806,8 +702,6 @@ namespace Egyptopia.Persistence.Migrations
 
             modelBuilder.Entity("Egyptopia.Domain.Entities.Hotel", b =>
                 {
-                    b.Navigation("Facilities");
-
                     b.Navigation("HotelComments");
 
                     b.Navigation("Rooms");
