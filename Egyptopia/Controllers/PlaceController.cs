@@ -59,7 +59,6 @@ namespace EgyptopiaApi.Controllers
             return Ok(data);
         }
 
-        [Authorize]
         [HttpGet(nameof(GetAllPlace))]
         public ActionResult<List<PlaceResponseModel>> GetAllPlace()
         {
@@ -76,7 +75,7 @@ namespace EgyptopiaApi.Controllers
         [HttpGet(nameof(GetPlace))]
         public ActionResult<PlaceResponseModel> GetPlace(Guid id)
         {
-            var place = _placeRepository.Get(id);
+            var place = _placeRepository.GetWithGovernorate(id);
             if (place == null)
             {
                 return NotFound();
