@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Egyptopia.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Egyptopia.Domain.Entities
 {
-    public class BookingTourGuide
+    public class BookingTourGuide:EntityBase
     {
         public DateTime CheckInDate { get; set; }
         
@@ -16,6 +17,8 @@ namespace Egyptopia.Domain.Entities
 
         public Guid? TourGuideId { get; set; }
         [ForeignKey("TourGuideId")]
+       
+        public int NumberOfGuests { get; set; } = 1;
         public virtual TourGuide TourGuide { get; set; }
         public double TotalAmount { get; set; }
     }

@@ -1,8 +1,9 @@
-﻿//using Egyptopia.Domain.Entities;
+﻿using Egyptopia.Domain.Entities;
 
-//namespace Egyptopia.Application.Repositories
-//{
-//    public interface IBookingTourGuideRepository : IBaseRepository<BookingTourGuide>
-//    {
-//    }
-//}
+namespace Egyptopia.Application.Repositories
+{
+    public interface IBookingTourGuideRepository : IBaseRepository<BookingTourGuide>
+    {
+        Task<BookingTourGuide?> GetExistingBooking(DateTime checkInDate, Guid? tourGuideId);
+    }
+}

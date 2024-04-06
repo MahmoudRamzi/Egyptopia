@@ -7,6 +7,7 @@ using Egyptopia.Domain.DTOs.TourguideComment;
 using Egyptopia.Domain.DTOs.TourguideLanuage;
 using Egyptopia.Domain.Entities;
 using Egyptopia.Domain.Enums;
+using Egyptopia.Persistence.Repositories;
 using EgyptopiaApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,18 +55,11 @@ namespace EgyptopiaApi.Controllers
             return Ok(data);
         }
 
-        
+
         [HttpGet(nameof(GetAllTourGuide))]
-        public async Task<ActionResult<List<ReadTourGuide>>> GetAllTourGuide()
+        public ActionResult<List<TourGuideModell>> GetAllTourGuide()
         {
-            var hotels = await _tourGuideRepository.GetAllWithCommentsAndLanguages();
-            if (hotels == null)
-            {
-                return NotFound();
-            }
-            var tourGuidesDto = _tourGuideRepository.Mapping(hotels);
-                
-            return Ok(tourGuidesDto);
+            return Ok(_mapper.Map<List<TourGuideModell>>(_tourGuideRepository.GetAll()));
         }
 
         [HttpGet(nameof(GetTourGuide))]

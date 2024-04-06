@@ -1,97 +1,112 @@
-﻿//using AutoMapper;
-//using Egyptopia.Application.Repositories;
-//using Egyptopia.Domain.Entities;
-//using EgyptopiaApi.Models;
-//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Mvc;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
+﻿using AutoMapper;
+using Egyptopia.Application.Repositories;
+using Egyptopia.Domain.Entities;
+using EgyptopiaApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+namespace EgyptopiaApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    //to be modified
 
-//namespace EgyptopiaApi.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    //to be modified
+    public class BookingTourGuideController : ControllerBase
+    {
+        private readonly IBookingTourGuideRepository _bookingTourGuidRepository;
+        private readonly ITourGuideRepository _tourGuideRepository;
+        private readonly IMapper _mapper;
+        public BookingTourGuideController(
+            IBookingTourGuideRepository bookingTourGuideRepository,
+            IMapper mapper,
+            ITourGuideRepository tourGuideRepository
+            )
+        {
+            _bookingTourGuidRepository = bookingTourGuideRepository;
+            _mapper = mapper;
 
-//    public class BookingRoomController : ControllerBase
-//    {
-//        private readonly IBookingRoomRepository _bookingRoomRepository;
-//        private readonly IRoomRepository _roomRepository;
-//        private readonly IMapper _mapper;
-//        public BookingRoomController(
-//            IBookingRoomRepository bookingRoomRepository,
-//            IMapper mapper,
-//            IRoomRepository roomRepository
-//            )
-//        {
-//            _bookingRoomRepository = bookingRoomRepository;
-//            _mapper = mapper;
+            _tourGuideRepository = tourGuideRepository;
 
-//            _roomRepository == roomRepository;
-
-//        }
-
+        }
 
 
-//        [Authorize]
-//        [HttpGet(nameof(GetAllRoomBooking))]
-//        public ActionResult<List<BookingRoom>> GetAllRoomBooking()
-//        {
-//            return Ok(_mapper.Map<List<BookingRoom>>(_bookingRoomRepository.GetAll()));
-//        }
+        [HttpPost(nameof(CreateTourGuideBooking))]
+        public async Task<ActionResult<BookingTourGuideResponseModel>> CreateTourGuideBooking([FromBody] BookingTourGuideInputModel inputModel)
+        {
+            // Check if booking exists for the same date and tour guide
+            var existingBooking = await _bookingTourGuidRepository.GetExistingBooking(inputModel.CheckInDate, inputModel.TourGuideId);
+            if (existingBooking != null)
+            {
+                return BadRequest("A booking for this date and tour guide already exists.");
+            }
 
-//        [HttpGet(nameof(GetRoomBooking))]
-//        public ActionResult<BookingRoomResponseModel?> GetRoomBooking(Guid id)
-//        {
-//            return Ok(_mapper.Map<BookingRoom>(_bookingRoomRepository.Get(id)));
-//        }
+            // Retrieve the tour guide to get the price
+            var tourGuide =  _tourGuideRepository.Get(inputModel.TourGuideId.Value);
+            if (tourGuide == null)
+            {
+                return BadRequest("Tour guide not found.");
+            }
 
-//        [HttpPut(nameof(UpdateRoomBooking))]
-//        public ActionResult<BookingRoomInputModel?> UpdateRoomBooking(BookingRoomResponseModel model)
-//        {
-//            if (model == null)
-//                return BadRequest();
-//            var entity = _bookingRoomRepository.Get(model.Id);
-//            if (entity == null)
-//                return NotFound();
-//            return Ok(_bookingRoomRepository.Update(_mapper.Map(model, entity)));
-//        }
+            // Calculate the total amount
+            var totalAmount = inputModel.NumberOfGuests * tourGuide.Price;
 
-//        [HttpDelete(nameof(DeleteRoomBooking))]
-//        public ActionResult DeleteRoomBooking(Guid id)
-//        {
-//            var entity = _bookingRoomRepository.Get(id);
-//            if (entity == null)
-//                return NotFound();
+            // Map the input model to the domain entity
+            var bookingEntity = _mapper.Map<BookingTourGuide>(inputModel);
+            bookingEntity.TotalAmount = totalAmount; // Set the calculated total amount
 
-//            _bookingRoomRepository.Delete(entity);
-//            return Ok();
-//        }
-//        [HttpGet(nameof(GetRemainingRooms))]
-//        public async Task<ActionResult<List<int>>> GetRemainingRooms(Guid hotelId, string roomType, DateTime checkInDate, DateTime checkOutDate)
-//        {
-//            return Ok(await _bookingRoomRepository.GetRemainingRooms(hotelId, roomType, checkInDate, checkOutDate));
-//        }
-//        [HttpPost(nameof(CreateRoomBooking))]
-//        public async Task<ActionResult<BookingRoom?>> CreateRoomBooking(BookingRoomResponseModel model)
-//        {
-//            var room = _roomRepository.Get(model.RoomId.GetValueOrDefault());
-//            var roomNumber = await _bookingRoomRepository.GetRemainingRooms(room.HotelId, room.RoomType, model.CheckInDate, model.CheckOutDate);
-//            if (!roomNumber.Any())
-//            {
-//                return BadRequest("no empty room");
-//            }
-//            model.RoomNumber = roomNumber.FirstOrDefault();
-//            var data = _bookingRoomRepository.Create(_mapper.Map<BookingRoom>(model));
+            // Save the new booking
+            var createdBooking = _bookingTourGuidRepository.Create(bookingEntity);
+            if (createdBooking == null)
+            {
+                return BadRequest("Unable to create booking.");
+            }
 
-//            if (data == null)
-//            {
-//                return BadRequest();
-//            }
-//            return Ok(data);
-//        }
+            // Map the domain entity to the response model
+            var responseModel = _mapper.Map<BookingTourGuideResponseModel>(createdBooking);
 
-//    }
-//}
+            // Return the created booking with the route to get it
+            return CreatedAtAction(nameof(GetTourGuideBooking), new { id = responseModel.Id }, responseModel);
+        }
+
+        //[Authorize]
+        [HttpGet(nameof(GetAllTourGuideBooking))]
+        public ActionResult<List<BookingTourGuideResponseModel>> GetAllTourGuideBooking()
+        {
+            return Ok(_mapper.Map<List<BookingTourGuide>>(_bookingTourGuidRepository.GetAll()));
+        }
+
+        [HttpGet(nameof(GetTourGuideBooking))]
+        public ActionResult<BookingTourGuideResponseModel?> GetTourGuideBooking(Guid id)
+        {
+            return Ok(_mapper.Map<BookingTourGuide>(_bookingTourGuidRepository.Get(id)));
+        }
+
+        [HttpPut(nameof(UpdateTourGuideBooking))]
+        public ActionResult<BookingTourGuideInputModel?> UpdateTourGuideBooking(BookingTourGuideResponseModel model)
+        {
+            if (model == null)
+                return BadRequest();
+            var entity = _bookingTourGuidRepository.Get(model.Id);
+            if (entity == null)
+                return NotFound();
+            return Ok(_bookingTourGuidRepository.Update(_mapper.Map(model, entity)));
+        }
+
+        [HttpDelete(nameof(DeleteTourGuideBooking))]
+        public ActionResult DeleteTourGuideBooking(Guid id)
+        {
+            var entity = _bookingTourGuidRepository.Get(id);
+            if (entity == null)
+                return NotFound();
+
+            _bookingTourGuidRepository.Delete(entity);
+            return Ok();
+        }
+        
+       
+
+    }
+}

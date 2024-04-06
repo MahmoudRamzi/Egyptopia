@@ -11,9 +11,11 @@ namespace EgyptopiaApi
         public AutoMapperProfile()
         {CreateMap<Governorate, GovernorateModel>();            
 CreateMap<GovernorateModel, Governorate>();
-CreateMap<TourGuide, TourGuideModel>();
-CreateMap<TourGuideModel, TourGuide>();
-CreateMap<Room, RoomModel>();
+CreateMap<TourGuideRead, TourGuide>();
+CreateMap<TourGuideRead, TourGuide>();
+            CreateMap<TourGuideModell, TourGuide>();
+            CreateMap<TourGuide, TourGuideModell>();
+            CreateMap<Room, RoomModel>();
 CreateMap<RoomModel, Room>();
             CreateMap<Hotel, HotelModel>();
             CreateMap<HotelModel, Hotel>();
@@ -21,14 +23,14 @@ CreateMap<RoomModel, Room>();
             CreateMap<Place, PlaceInputModel>();
             CreateMap<PlaceResponseModel, Place>();
             CreateMap<Place, PlaceResponseModel>();
-            //CreateMap<BookingRoom, BookingRoomInputModel>();
-            //CreateMap<BookingRoomInputModel, BookingRoom>();
-            //CreateMap<BookingRoom, BookingRoomResponseModel>();
-            //CreateMap<BookingRoomResponseModel, BookingRoom>();
-            //CreateMap<BookingTourGuideResponse, BookingTourGuide>();
-            //CreateMap<BookingTourGuide, BookingTourGuideResponse>();
-            //CreateMap<BookingTourGuideInput, BookingTourGuide>();
-            //CreateMap<BookingTourGuide, BookingTourGuideInput>();
+            CreateMap<BookingRoom, BookingRoomInputModel>();
+            CreateMap<BookingRoomInputModel, BookingRoom>();
+            CreateMap<BookingRoom, BookingRoomResponseModel>();
+            CreateMap<BookingRoomResponseModel, BookingRoom>();
+            CreateMap<BookingTourGuideResponseModel, BookingTourGuide>();
+            CreateMap<BookingTourGuide, BookingTourGuideResponseModel>();
+            CreateMap<BookingTourGuideInputModel, BookingTourGuide>();
+            CreateMap<BookingTourGuide, BookingTourGuideInputModel>();
 
             CreateMap<Image, ImageModel>();
             CreateMap<ImageModel, Image>()
